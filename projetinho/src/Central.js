@@ -1,4 +1,5 @@
 import React from "react";
+import Button from '@mui/material/Button';
 
 import ApiPlaceHolder from "./ApiPlaceHolder";
 
@@ -11,8 +12,9 @@ function Central() {
         <div>	
         <h1>Centro</h1>
 
-        <ApiPlaceHolder/>
-   
+     
+        <Button variant="text">apis</Button>
+        
         </div>
     );
     }

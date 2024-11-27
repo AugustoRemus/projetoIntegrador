@@ -1,13 +1,13 @@
-const apis = [
+export const apis = [
     {
         id: 1,
         nome: "JSONPlaceholder",
         url_base: "https://jsonplaceholder.typicode.com",
         desc: "API fake para testes",
-        temp_esp_cont_dias: 365, // Em dias
+        temp_esp_cont_dias: 365,
         dt_cad: "2024-11-26",
-        freq_at_min: 60, // Frequência de monitoramento em minutos
-        ativo: true, // Indica se a API está sendo monitorada
+        freq_at_min: 60,
+        ativo: true,
     },
     {
         id: 2,
@@ -21,4 +21,23 @@ const apis = [
     },
 ];
 
-export default apis;
+export const users = [
+    {
+        id: 1,
+        nome: "Laura Mesquita",
+        email: "lauramesquitabruel123@gmail.com",
+        telefone: "54 98402-1710",
+        login: "",
+        senha: "",
+        tipo: "ADM",
+    },
+    {
+        id: 2,
+        nome: "Augusto Remus",
+        email: "lala.pessoinha@gmail.com",
+        telefone: "",
+        login: "",
+        senha: "",
+        tipo: "BS",
+    },
+];

@@ -1,4 +1,5 @@
-import { listarApisModelo, encontrarApiModelo, cadastrarApiModelo, atualizarApiModelo, excluirApiModelo } from "../models/apiModels.js";
+import { listarApisModelo, encontrarApiModelo, cadastrarApiModelo, atualizarApiModelo, excluirApiModelo, verificaStatusModelo } from "../models/apiModels.js";
+import { notificarUsuarios } from "./userController.js";
 
 export async function listarApis (req, res) {
     try{
@@ -40,7 +41,6 @@ export async function cadastrarApi(req, res) {
 
 };
 
-
 //ainda não funciona
 export async function atualizarApi(req, res){
     const id = req.params.id;
@@ -76,4 +76,24 @@ export async function excluirApi(req, res){
         console.error(erro.message);
         res.status(500).json({"Erro":"Falha na requisição"});
     }
+};
+
+//verifica se a API está ativa
+export async function verificaStatus(req, res){
+    const id = req.params.id;
+
+    try{
+        const ativa = verificaStatusModelo(id);
+        if(ativa){
+            res.status(200).json({"Status": "API ativa"});
+        } else {
+            const apiInativa = encontrarApiModelo(id);
+            res.status(200).json({"Status": "API fora do ar"});
+            notificarUsuarios(apiInativa);
+        }
+    } catch (erro){
+        console.error(erro.message);
+        res.status(500).json({"Erro":"Falha na requisição"});
+    }
+    
 };

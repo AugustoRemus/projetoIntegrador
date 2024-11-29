@@ -1,5 +1,5 @@
 import express from "express";
-import { listarApis, listaApiPorId, cadastrarApi, atualizarApi, excluirApi, verificaStatus } from "../controllers/apiController.js";
+import { listarApis, listaApiPorId, cadastrarApi, atualizarApi, excluirApi } from "../controllers/apiController.js";
 
 const apiRoutes = (app) => {
     app.use(express.json());
@@ -13,8 +13,6 @@ const apiRoutes = (app) => {
     app.put("/api/:id/:atributo", atualizarApi);
 
     app.delete("/api/:id", excluirApi);
-
-    app.get("/api/ativa/:id", verificaStatus);
 
 };
 

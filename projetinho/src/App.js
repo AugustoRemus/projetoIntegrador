@@ -1,8 +1,6 @@
 import React from "react";
-import Hello from "./Hello";
-import Central from "./Central";
-import Cabecalho from "./Cabecalho";
-import Lateral from "./Lateral";
+import Layout from "./Layout";
+
 
 
 
@@ -13,10 +11,8 @@ function App() {
 
     return (
         <div>	
-        <Hello/>
-        <Cabecalho/>
-        <Lateral/>
-        <Central/>
+        
+        <Layout />
         </div>
     );
     }

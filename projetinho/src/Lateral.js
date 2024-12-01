@@ -12,14 +12,14 @@ function Lateral() {
     return (
         <div>
             <Box component="section"    sx={{
-        bgcolor: '#4d4d4d',
+        bgcolor: '#343434',
         width: 200, 
         height: '100vh', 
         boxShadow: 1,
         position: 'fixed', 
         top: 0, 
         left: 0, 
-        borderRight: '4px solid darkred'
+    
       }}
 
             >

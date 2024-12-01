@@ -12,14 +12,14 @@ function Cabecalho() {
     return (
         <div>
             <Box component="section" sx={{
-                bgcolor: '#4d4d4d',
-                height: 100,
+                bgcolor: '#343434',
+                height: 200,
                 boxShadow: 1,
                 position: 'fixed', 
                 top: 0, 
                 left: 0, 
                 right:0,
-                borderBottom: '4px solid darkred'
+            
 
             }}>
 

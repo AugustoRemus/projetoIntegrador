@@ -12,33 +12,37 @@ function Cabecalho() {
     return (
         <div>
             <Box component="section" sx={{
-                bgcolor: '#343434',
-                height: 200,
+                bgcolor: '#343434', //mais escura
+                height: '10vh',
                 boxShadow: 1,
-                position: 'fixed', 
-                top: 0, 
-                left: 0, 
-                right:0,
-            
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                borderBottom: '4px solid black'
+
 
             }}>
 
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid container spacing={2}>
                         <Grid size={2}>
-                            Parte inicial
+                            Parte inicial logo da empresa ou status
                         </Grid>
                         <Grid size={8}>
                             Meio
                         </Grid>
                         <Grid size={1}></Grid>
                         <Grid size={1}>
-                            Parte Final
+                            Parte Final pra botar hora ou status
+
                         </Grid>
                     </Grid>
                 </Box>
-                
+
             </Box>
+
+
 
 
 

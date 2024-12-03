@@ -8,9 +8,12 @@ function Layout() {
   return (
     <>
    
-      <Cabecalho />
-      <Lateral />
+   
+    
       <Conteudo />
+      <Lateral />
+      <Cabecalho />
+      
       <Login />
 
       

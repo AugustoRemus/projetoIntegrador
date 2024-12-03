@@ -34,7 +34,7 @@ export const users = [
     {
         id: 2,
         nome: "Augusto Remus",
-        email: "lala.pessoinha@gmail.com",
+        email: "lauramesquitabruel@gmail.com",
         telefone: "",
         login: "",
         senha: "",

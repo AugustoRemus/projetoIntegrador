@@ -1,5 +1,5 @@
-import { listarApisModelo, encontrarApiModelo, cadastrarApiModelo, atualizarApiModelo, excluirApiModelo, verificaStatusModelo } from "../models/apiModels.js";
-import { notificarUsuarios } from "./userController.js";
+import { listarApisModelo, encontrarApiModelo, cadastrarApiModelo, atualizarApiModelo, excluirApiModelo, verificaStatusApiModelo } from "../models/apiModels.js";
+import { notificarUsuarios } from "../models/userModels.js";
 
 export async function listarApis (req, res) {
     try{
@@ -76,5 +76,24 @@ export async function excluirApi(req, res){
         console.error(erro.message);
         res.status(500).json({"Erro":"Falha na requisição"});
     }
+};
+
+export async function verificaStatusApi(req, res){
+    const id = req.params.id;
+
+    try{
+        const ativa = false;
+        if(ativa){
+            res.status(200).json({"Status": "API ativa"});
+        } else {
+            const apiInativa = encontrarApiModelo(id);
+            res.status(200).json({"Status": "API fora do ar"});
+            notificarUsuarios(apiInativa);
+        }
+    } catch (erro){
+        console.error(erro.message);
+        res.status(500).json({"Erro":"Falha na requisição"});
+    }
+    
 };
 

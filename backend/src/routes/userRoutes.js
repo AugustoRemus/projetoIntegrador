@@ -10,9 +10,10 @@ const userRoutes = (app) => {
 
     app.post("/user", cadastrarUsuario);
 
-    app.put("/user/:id/:atributo", atualizarUsuario);
+    app.put("/user/:id", atualizarUsuario);
 
     app.delete("/user/:id", excluirUsuario);
+
 };
 
 export default userRoutes;

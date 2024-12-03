@@ -1,42 +1,93 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid2';
+import ToggleButton from '@mui/material/ToggleButton';
 
-function Lateral() {
-    const [nome, setNome] = React.useState("");
+export default function Lateral() {
+   
+    const [selectedUm, setSelectedUm] = React.useState(false);
+    const [selectedDois, setSelectedDois] = React.useState(false);
+    const [selectedTres, setSelectedTres] = React.useState(false);
 
-    const alterarNome = (event) => { setNome(event.target.value); }
+    //verifica
+    const [logado, setLogado] = React.useState(false);
+
+
+    const testeLogin = () => {
+        if (!logado) {
+            alert("Faça login para acessar outras funcionalidades");
+        } else {
+            alert("Logado!"); 
+        }
+    };
+
+    //muda o estado
+    const mudarPermi = () => {
+        setLogado((prevLogado) => !prevLogado); 
+    };
 
     return (
-        <div>
-            <Box component="section"    sx={{
-        bgcolor: '#343434',
-        width: 200, 
-        height: '100vh', 
-        boxShadow: 1,
-        position: 'fixed', 
-        top: 0, 
-        left: 0, 
-    
-      }}
-
+        <Box
+            component="section"
+            sx={{
+                bgcolor: '#4a4a4a',
+                width: '10vw',
+                height: '90vh',
+                boxShadow: 1,
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                borderRight: '4px solid black',
+            }}
+        >
+            <ToggleButton
+                value="check"
+                selected={selectedUm} 
+                onChange={() => {
+                    setSelectedUm((prevSelected) => !prevSelected);
+                    mudarPermi(); 
+                }}
+                sx={{
+                    height: '10vh',
+                    boxShadow: 1,
+                    border: '1px solid black',
+                }}
             >
+                um
+            </ToggleButton>
 
-                <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2}>
-                        lateral
-                    </Grid>
-                </Box>
-                
-            </Box>
+            <ToggleButton
+                value="check"
+                selected={selectedDois} 
+                onChange={() => {
+                    setSelectedDois((prevSelected) => !prevSelected);
+                    testeLogin(); 
+                }}
+                sx={{
+                    height: '10vh',
+                    boxShadow: 1,
+                    border: '1px solid black',
+                }}
+            >
+                dois
+            </ToggleButton>
 
-
-
-        </div>
+            <ToggleButton
+                value="check"
+                selected={selectedTres} 
+                onChange={() => {
+                    setSelectedTres((prevSelected) => !prevSelected);
+                    testeLogin(); 
+                }}
+                sx={{
+                    height: '10vh',
+                    boxShadow: 1,
+                    border: '1px solid black',
+                }}
+            >
+                tres
+            </ToggleButton>
+        </Box>
     );
 }
-
-export default Lateral;
-

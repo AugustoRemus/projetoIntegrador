@@ -1,30 +1,46 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import ToggleButton from '@mui/material/ToggleButton';
-import Login from'./Login';
+import Login from './Login';
+import Apis from './Apis';
+import Conf from './Conf';
+import Adms from './Adms';
 
 export default function Lateral() {
-   
-    const [selectedUm, setSelectedUm] = React.useState(false);
-    const [selectedDois, setSelectedDois] = React.useState(false);
-    const [selectedTres, setSelectedTres] = React.useState(false);
 
-    //verifica
     const [logado, setLogado] = React.useState(false);
+    const [telaAtiva, setTelaAtiva] = React.useState('login'); //tela atual
 
+    //todas as telas ficam aqui
+    const telas = {
+        login: <Login />,
+        apis: <Apis />,
+        conf: <Conf />,
+        adms: <Adms />
+    };
 
-    const testeLogin = () => {
+    //login
+    const verificarLogin = (novaTela) => {
         if (!logado) {
-            alert("Faça login para acessar outras funcionalidades");
+            alert('Logue para mais funcionalidades');
         } else {
-            alert("Logado!"); 
+            setTelaAtiva(novaTela);   //manda pra nova tela
         }
     };
 
-    //muda o estado
-    const mudarPermi = () => {
-        setLogado((prevLogado) => !prevLogado); 
+    const mudarPermissao = () => {
+        setLogado((prevLogado) => !prevLogado);
+        alert(!logado ? 'logado' : 'deslogado.');   //somente para debug
     };
+
+    //os botao e oq tem q ter pra acessar
+    const botoes = [
+        { label: 'Login', tela: 'login', precisaLogin: false },
+        { label: 'Apis', tela: 'apis', precisaLogin: true },
+        { label: 'Conf', tela: 'conf', precisaLogin: true },
+        { label: 'Conf Admins', tela: 'adms', precisaLogin: true },
+        { label: 'Logar/Deslogar', acao: mudarPermissao }, //debug so muda se ta logado ou n
+    ];
 
     return (
         <Box
@@ -42,55 +58,40 @@ export default function Lateral() {
                 borderRight: '4px solid black',
             }}
         >
-            <ToggleButton
-                value="check"
-                selected={selectedUm} 
-                onChange={() => {
-                    setSelectedUm((prevSelected) => !prevSelected);
-                    mudarPermi(); 
-                }}
-                sx={{
-                    height: '10vh',
-                    boxShadow: 1,
-                    border: '1px solid black',
-                }}
-            >
-                um
-            </ToggleButton>
+            {botoes.map((botao, index) => (
+                <ToggleButton
+                    key={index}
+                    value="check"
+                    onChange={() => {
+                        if (botao.acao) {
+                            botao.acao(); //se tem acao
+                        } else if (botao.precisaLogin) {
+                            verificarLogin(botao.tela); //olha se tem q ter login
+                        } else {
+                            setTelaAtiva(botao.tela); //bota a tela do botao ativa
+                        }
+                    }}
+                    sx={{
+                        height: '10vh',
+                        boxShadow: 1,
+                        border: '1px solid black',
+                    }}
+                >
+                    {botao.label}
+                </ToggleButton>
+            ))}
 
-            <ToggleButton
-                value="check"
-                selected={selectedDois} 
-                onChange={() => {
-                    setSelectedDois((prevSelected) => !prevSelected);
-                    testeLogin(); 
-                }}
+            
+            <Box
                 sx={{
-                    height: '10vh',
-                    boxShadow: 1,
-                    border: '1px solid black',
+                    flex: 1,
+                    bgcolor: '#fff',
+                    width: '90vw',
+                    marginLeft: '10vw',  //carrega a tela
                 }}
             >
-                dois
-            </ToggleButton>
-
-            <ToggleButton
-                value="check"
-                selected={selectedTres} 
-                onChange={() => {
-                    setSelectedTres((prevSelected) => !prevSelected);
-                    testeLogin(); 
-                }}
-                sx={{
-                    height: '10vh',
-                    boxShadow: 1,
-                    border: '1px solid black',
-                }}
-            >
-                tres
-            </ToggleButton>
-            <Login />
+                {telas[telaAtiva]} 
+            </Box>
         </Box>
-        
     );
 }

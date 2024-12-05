@@ -1,4 +1,4 @@
-import { listarUsuarios, listarUsuarioPorId, cadastrarUsuario, atualizarUsuario, excluirUsuario } from "../controllers/userController.js";
+import { listarUsuarios, listarUsuarioPorId, cadastrarUsuario, atualizarUsuario, excluirUsuario, autenticarUsuario } from "../controllers/userController.js";
 import express from "express";
 
 const userRoutes = (app) => {
@@ -13,6 +13,8 @@ const userRoutes = (app) => {
     app.put("/user/:id", atualizarUsuario);
 
     app.delete("/user/:id", excluirUsuario);
+
+    app.post("/login", autenticarUsuario);
 
 };
 

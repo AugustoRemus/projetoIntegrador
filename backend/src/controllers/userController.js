@@ -1,4 +1,8 @@
-import { listarUsuariosModelo, encontrarUsuarioModelo, cadastrarUsuarioModelo, atualizarUsuarioModelo, excluirUsuarioModelo } from "../models/userModels.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import { listarUsuariosModelo, encontrarUsuarioModelo, cadastrarUsuarioModelo, atualizarUsuarioModelo, excluirUsuarioModelo, autenticarUsuarioModelo, gerarTokenAcesso } from "../models/userModels.js";
+
+dotenv.config();
 
 export async function listarUsuarios (req, res) {
     try{
@@ -76,6 +80,41 @@ export async function excluirUsuario(req, res){
     }
 };
 
+export async function autenticarUsuario(req, res) {
+    const {login, senha} = req.body;
+
+    try{
+        const usuario = autenticarUsuarioModelo(login, senha);
+
+        if(usuario){
+            const token = await gerarTokenAcesso(usuario);
+            res.status(201).json({message: token});
+        } else {
+            res.status(401).json({"Erro": "Usuário ou senha inválidos"});
+        }
+    } catch(erro){
+        console.error(erro.message);
+        res.status(500).json({"Erro":"Falha na requisição"});
+    }
+   
+};
+
+export const tokenAutenticado = (req, res, next ) => {
+    const token = req.headers['authorization'];
+
+    if(!token){
+        return res.status(403).json("Token não fornecido");
+    }
+
+    jwt.verify(token, process.env.SECRET_KEY, (erro, usuario) => {
+        if(erro){
+            return res.status(403).json("Token inválido!");
+        } else {
+            req.usario = usuario;
+            next();
+        }
+    }); 
+}; 
 
 
 

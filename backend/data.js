@@ -27,8 +27,8 @@ export const users = [
         nome: "Laura Mesquita",
         email: "lauramesquitabruel123@gmail.com",
         telefone: "54 98402-1710",
-        login: "",
-        senha: "",
+        login: "lau",
+        senha: "miau",
         tipo: "ADM",
     },
     {

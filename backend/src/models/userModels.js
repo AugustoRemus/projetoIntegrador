@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 import { users } from "../../data.js";
 dotenv.config();
 
@@ -100,3 +101,18 @@ export async function notificarUsuarios(api) {
         await enviarEmail(usuario.email, `Alerta: API "${api.nome}" Inativa`, mensagem);
     }
 };
+
+export async function autenticarUsuarioModelo(usuario, senha){
+    const user = users.find(user => user.login === usuario && user.senha === senha);
+    return user;
+};
+
+export async function gerarTokenAcesso(usuario){
+    const token = jwt.sign({id: usuario.id, login: usuario.login, tipo: usuario.tipo },
+        process.env.SECRET_KEY,
+        {expiresIn: '8h'}
+    );
+
+    return token;
+};
+

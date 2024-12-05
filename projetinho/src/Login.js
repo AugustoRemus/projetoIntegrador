@@ -1,36 +1,130 @@
-import React from 'react';
-import Box from '@mui/material/Box';
+import React from "react";
+import axios from "axios";
+import {
+    Alert,
+    Box,
+    Button,
+    Snackbar,
+    Stack,
+    TextField,
+} from "@mui/material";
 
+export default function Login(props) {
+    const [username, setUsername] = React.useState("");
+    const [passwd, setPasswd] = React.useState("");
+    const [openMessage, setOpenMessage] = React.useState(false);
+    const [messageText, setMessageText] = React.useState("");
+    const [messageSeverity, setMessageSeverity] = React.useState("success");
 
-function Login() {
+    async function enviaLogin(event) {
+        event.preventDefault();
+        try {
+            const response = await axios.post("/login", {
+                username: username,
+                password: passwd,
+            });
+            if (response.status >= 200 && response.status < 300) { //
+                // Salva o token JWT na sessão
+				localStorage.setItem("token", response.data.token);
+				// seta o estado do login caso tudo deu certo
+				props.handleLogin(true);
+				console.log(props.user);
+			} else {
+				// falha
+                console.error("Falha na autenticação");
+            }
+        } catch (error) {
+            console.error(error);
+            setOpenMessage(true);
+            setMessageText("Falha ao logar usuário!");
+            setMessageSeverity("error");
+        }
+    }
+
+    function cancelaLogin() {
+        setUsername("");
+        setPasswd("");
+        setOpenMessage(true);
+        setMessageText("Login cancelado!");
+        setMessageSeverity("warning");
+    }
+
+    function handleCloseMessage(_, reason) {
+        if (reason === "clickaway") {
+            return;
+        }
+        setOpenMessage(false);
+    }
+
+    const isFormValid = username.trim() !== "" && passwd.trim() !== "";  //olha ignorando os espaços em branco
+
     return (
-        <>
-
-            <Box
-                sx={{
-                    marginLeft: '400px',
-                    marginTop: '200px',
-                    marginRight: '200px',
-                    marginBottom: '100px',
-                    padding: '16px',
-                    
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    border: '4px solid black',
-                   
-
-                }}
+        <Box
+            sx={{
+                width: '70vw',
+                height: '75vh',
+                margin: 'auto',
+                position: 'fixed',
+                top: '18vh',
+                left: '20vw',
+                border: '4px solid black',
+                backgroundColor: '#f5f5f5',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                borderRadius: '8px',
+            }}
+        >
+            <h1>Tela de Login</h1>
+            <Stack spacing={2} sx={{ width: '60%' }}>
+                <TextField
+                    required
+                    id="username-input"
+                    label="Usuário"
+                    size="medium"
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                />
+                <TextField
+                    required
+                    id="passwd-input"
+                    label="Senha"
+                    type="password"
+                    size="medium"
+                    value={passwd}
+                    onChange={(event) => setPasswd(event.target.value)}
+                />
+                <Stack direction="row" spacing={3} justifyContent="center">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={enviaLogin}
+                        disabled={!isFormValid}   //olha se tao vazio
+                        sx={{ width: '100px', fontSize: '1rem' }}
+                    >
+                        Enviar
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={cancelaLogin}
+                        sx={{ width: '100px', fontSize: '1rem' }}
+                    >
+                        Cancelar
+                    </Button>
+                </Stack>
+            </Stack>
+            <Snackbar
+                open={openMessage}
+                autoHideDuration={6000}
+                onClose={handleCloseMessage}
             >
-                <h1>Meio</h1>
-                <p>Login</p>
-            </Box>
-
-
-        </>
+                <Alert severity={messageSeverity} onClose={handleCloseMessage}>
+                    {messageText}
+                </Alert>
+            </Snackbar>
+        </Box>
     );
 }
-
-export default Login;

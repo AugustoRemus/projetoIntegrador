@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import ToggleButton from '@mui/material/ToggleButton';
+import Login from'./Login';
 
 export default function Lateral() {
    
@@ -88,6 +89,8 @@ export default function Lateral() {
             >
                 tres
             </ToggleButton>
+            <Login />
         </Box>
+        
     );
 }

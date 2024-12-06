@@ -41,12 +41,12 @@ export default function Conf() {
     return (
         <Box
             sx={{
-                width: '70vw',
-                height: '75vh',
-                margin: 'auto',
+                width: '85vw',
+                height: '90vh',
+                //margin: 'auto',
                 position: 'fixed',
-                top: '18vh',
-                left: '20vw',
+                top: '10vh',
+                left: '10vw',
                 border: '4px solid black',
                 backgroundColor: '#f5f5f5',
                 display: 'flex',
@@ -55,9 +55,11 @@ export default function Conf() {
                 alignItems: 'center',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                 borderRadius: '8px',
+                paddingLeft: '2.5vw',
+                paddingRight: '3vw'
             }}
         >
-            <h1>Configurações do Usuário</h1>
+          
             <Box
                 component="form"
                 sx={{
@@ -70,6 +72,7 @@ export default function Conf() {
                 noValidate
                 autoComplete="off"
             >
+                  <h1>Configurações do Usuário</h1>
                 <TextField
                     id="nome"
                     label="Nome"
@@ -96,11 +99,11 @@ export default function Conf() {
                     type="number"
                 />
                 
-
+                <h1>Configurações de Login</h1>
 
                 <TextField
                     id="usuario"
-                    label="Novo Usuário"
+                    label="Novo nome de Usuário"
                     name="usuario"
                     value={formData.usuario}
                     onChange={handleChange}

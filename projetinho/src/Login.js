@@ -16,6 +16,8 @@ export default function Login(props) {
     const [messageText, setMessageText] = React.useState("");
     const [messageSeverity, setMessageSeverity] = React.useState("success");
 
+
+
     async function enviaLogin(event) {
         event.preventDefault();
         try {
@@ -61,12 +63,12 @@ export default function Login(props) {
     return (
         <Box
             sx={{
-                width: '70vw',
-                height: '75vh',
+                width: '90vw',
+                height: '90vh',
                 margin: 'auto',
                 position: 'fixed',
-                top: '18vh',
-                left: '20vw',
+                top: '10vh',
+                left: '10vw',
                 border: '4px solid black',
                 backgroundColor: '#f5f5f5',
                 display: 'flex',
@@ -115,6 +117,48 @@ export default function Login(props) {
                         Cancelar
                     </Button>
                 </Stack>
+
+                <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={cancelaLogin}
+                        sx={{ width: '100px', fontSize: '1rem' }}
+                    >
+                        Debug:logar
+                    </Button>
+
+                    <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={cancelaLogin}
+                        sx={{ width: '100px', fontSize: '1rem' }}
+                    >
+                        Debug:Deslogar
+                    </Button>
+
+
+                    <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={cancelaLogin}
+                        sx={{ width: '100px', fontSize: '1rem' }}
+                    >
+                        Debug:virarAdm
+                    </Button>
+
+
+                    <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={cancelaLogin}
+                        sx={{ width: '100px', fontSize: '1rem' }}
+                    >
+                        Debug:desviarAdm
+                    </Button>
+                
+
+
+
             </Stack>
             <Snackbar
                 open={openMessage}

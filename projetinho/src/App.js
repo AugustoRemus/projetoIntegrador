@@ -1,6 +1,5 @@
 import React from "react";
-import Layout from "./Layout";
-
+import Lateral from "./Lateral";
 
 
 
@@ -11,8 +10,8 @@ function App() {
 
     return (
         <div>	
-        
-        <Layout />
+            <Lateral />
+ 
         </div>
     );
     }

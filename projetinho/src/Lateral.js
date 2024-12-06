@@ -5,41 +5,54 @@ import Login from './Login';
 import Apis from './Apis';
 import Conf from './Conf';
 import Adms from './Adms';
+import Cabecalho from "./Cabecalho"
+import ApiAdms from './ApiAdms';
+import ListaUsuarios from './ListaUsuarios';
 
 export default function Lateral() {
 
     const [logado, setLogado] = React.useState(false);
-    const [telaAtiva, setTelaAtiva] = React.useState('login'); //tela atual
+    const [isAdmin, setIsAdmin] = React.useState(false); 
+    const [telaAtiva, setTelaAtiva] = React.useState('login'); //aqui fica a tela atual
 
-    //todas as telas ficam aqui
+    //as tela ficam  aqui
     const telas = {
         login: <Login />,
         apis: <Apis />,
         conf: <Conf />,
-        adms: <Adms />
+        adms: <Adms />,
+        apiAdms: <ApiAdms />,
+        usuarios: <ListaUsuarios />,
     };
 
-    //login
-    const verificarLogin = (novaTela) => {
-        if (!logado) {
-            alert('Logue para mais funcionalidades');
-        } else {
-            setTelaAtiva(novaTela);   //manda pra nova tela
-        }
-    };
-
-    const mudarPermissao = () => {
+    //login debug
+    const mudarStatusLogin = () => {
         setLogado((prevLogado) => !prevLogado);
-        alert(!logado ? 'logado' : 'deslogado.');   //somente para debug
+        if(!logado){
+            setTelaAtiva('apis');//da pra usar em um botao d dar deslogin
+        }
+        else{
+            setTelaAtiva('login');
+        }
+        
+        alert(!logado ? 'Logado': 'Deslogado.');
     };
 
-    //os botao e oq tem q ter pra acessar
+    const mudarPermissao = () =>{
+        setIsAdmin((prevIsAdmin) => (!prevIsAdmin)); 
+        alert(!isAdmin ? 'adm': 'normal');
+    }
+
+    
     const botoes = [
-        { label: 'Login', tela: 'login', precisaLogin: false },
+        { label: 'Login', tela: 'login', precisaLogin: false},
         { label: 'Apis', tela: 'apis', precisaLogin: true },
+        { label: 'Admin APIs', tela: 'apiAdms', precisaLogin: true, precisaAdmin: true },
         { label: 'Conf', tela: 'conf', precisaLogin: true },
-        { label: 'Conf Admins', tela: 'adms', precisaLogin: true },
-        { label: 'Logar/Deslogar', acao: mudarPermissao }, //debug so muda se ta logado ou n
+        { label: 'Usuarios', tela: 'usuarios', precisaLogin: true, precisaAdmin: true },
+        { label: 'Administrar Usuarios', tela: 'adms', precisaLogin: true, precisaAdmin: true },
+        { label: 'Logar/Deslogar', acao: mudarStatusLogin }, //debug login
+        { label: 'Admin/ n Adminin', acao: mudarPermissao },//debug adm
     ];
 
     return (
@@ -58,39 +71,49 @@ export default function Lateral() {
                 borderRight: '4px solid black',
             }}
         >
-            {botoes.map((botao, index) => (
-                <ToggleButton
-                    key={index}
-                    value="check"
-                    onChange={() => {
-                        if (botao.acao) {
-                            botao.acao(); //se tem acao
-                        } else if (botao.precisaLogin) {
-                            verificarLogin(botao.tela); //olha se tem q ter login
-                        } else {
-                            setTelaAtiva(botao.tela); //bota a tela do botao ativa
-                        }
-                    }}
-                    sx={{
-                        height: '10vh',
-                        boxShadow: 1,
-                        border: '1px solid black',
-                    }}
-                >
-                    {botao.label}
-                </ToggleButton>
-            ))}
+            <Cabecalho />
+
+           
+
+           
+            {botoes.map((botao, index) => {
+                //olha se pode mostrar
+                const podeExibir = !botao.precisaLogin || (logado && (!botao.precisaAdmin || isAdmin));
+
+                if (!podeExibir) return null;//so carrega se o usuario pode ver
+
+                return (
+                    <ToggleButton
+                        key={index}
+                        value="check"
+                        onChange={() => {
+                            if (botao.acao) {
+                                botao.acao();//faz algo caso tenha acao
+                            } else {
+                                setTelaAtiva(botao.tela);//escolhe a tela
+                            }
+                        }}
+                        sx={{
+                            height: '10vh',
+                            boxShadow: 1,
+                            border: '1px solid black',
+                        }}
+                    >
+                        {botao.label}
+                    </ToggleButton>
+                );
+            })}
 
             
             <Box
                 sx={{
-                    flex: 1,
+                    flex: 1,//tela ativad
                     bgcolor: '#fff',
                     width: '90vw',
-                    marginLeft: '10vw',  //carrega a tela
+                    marginLeft: '10vw',
                 }}
             >
-                {telas[telaAtiva]} 
+                {telas[telaAtiva]}
             </Box>
         </Box>
     );

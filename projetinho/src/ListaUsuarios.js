@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Stack } from "@mui/material";
 
-export default function Apis() {
-    const [listaApis, setListaApis] = useState([]);
+export default function ListaUsuarios() {
+    const [listaUsuarios, setListaUsuarios] = useState([]); //lista dos usuario
 
-    //pega os dados
+
+    //requisicao
     useEffect(() => {
         fetchData();
     }, []);
 
+
     const fetchData = async () => {
         try {
-            const res = await axios.get("/apis"); //botar certo
-            setListaApis(res.data); //lista d obj
+            const res = await axios.get("/users"); //botar o certo
+            setListaUsuarios(res.data);
         } catch (error) {
-            console.error("Erro ao buscar dados das APIs:", error);
-            setListaApis([]); //deu pau
+            console.error("Erro ao buscar dados dos usuários:", error);
+            setListaUsuarios([]);
         }
     };
+
+
 
     return (
         <Box
@@ -40,36 +44,41 @@ export default function Apis() {
                 paddingRight: '3vw'
             }}
         >
-            <h1>Exibição de APIs</h1>
-            <TableContainer component={Paper} sx={{ width: "100%" }}>
+
+
+            <h2>Usuários Cadastrados</h2>
+            <TableContainer component={Paper} sx={{ width: "100%", mb: 3 }}>
                 <Table>
                     <TableHead>
                         <TableRow>
                             <TableCell><b>ID</b></TableCell>
                             <TableCell><b>Nome</b></TableCell>
-                            <TableCell><b>Status Atual</b></TableCell>
-                            
+                            <TableCell><b>Email</b></TableCell>
+                            <TableCell><b>Permissão</b></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {listaApis.length > 0 ? (
-                            listaApis.map((api) => (
-                                <TableRow key={api.id}>
-                                    <TableCell>{api.id}</TableCell>
-                                    <TableCell>{api.nome}</TableCell>
-                                    <TableCell>{api.status}</TableCell>
+                        {listaUsuarios.length > 0 ? (
+                            listaUsuarios.map((usuario) => (
+                                <TableRow key={usuario.id}>
+                                    <TableCell>{usuario.id}</TableCell>
+                                    <TableCell>{usuario.nome}</TableCell>
+                                    <TableCell>{usuario.email}</TableCell>
+                                    <TableCell>{usuario.permissao}</TableCell>
                                 </TableRow>
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={3} align="center">
-                                    Nenhuma API disponível ou carregando dados...
+                                <TableCell colSpan={4} align="center">
+                                    Nenhum usuário disponível ou carregando dados...
                                 </TableCell>
                             </TableRow>
                         )}
                     </TableBody>
                 </Table>
             </TableContainer>
+
+        
         </Box>
     );
 }

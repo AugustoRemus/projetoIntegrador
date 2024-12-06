@@ -3,7 +3,7 @@ import axios from "axios";
 import { Alert, Box, Button, Snackbar, Stack, TextField } from "@mui/material";
 
 //ta recebendo diretamente os coisos
-export default function Login({ setLogado, setIsAdmin }) {
+export default function Login({ setLogado, setIsAdmin, setTelaAtiva }) {
     const [username, setUsername] = React.useState("");
     const [passwd, setPasswd] = React.useState("");
     const [openMessage, setOpenMessage] = React.useState(false);
@@ -21,6 +21,7 @@ export default function Login({ setLogado, setIsAdmin }) {
             if (response.status >= 200 && response.status < 300) {
                 localStorage.setItem("token", response.data.token);
                 console.log("Usuário logado com sucesso");
+                setTelaAtiva("apis");
             } else {
                 console.error("Falha na autenticação");
             }
@@ -38,6 +39,7 @@ export default function Login({ setLogado, setIsAdmin }) {
         switch (action) {
             case "logar":
                 setLogado(true);
+                setTelaAtiva("apis");
                 break;
             case "deslogar":
                 setLogado(false);
@@ -55,6 +57,7 @@ export default function Login({ setLogado, setIsAdmin }) {
 
 
     return (
+        
         <Box
             sx={{
                 width: '90vw',
@@ -75,7 +78,7 @@ export default function Login({ setLogado, setIsAdmin }) {
         >
 
 
-
+            
             <h1>Tela de Login</h1>
             <Stack spacing={2} sx={{ width: '60%' }}>
                 <TextField

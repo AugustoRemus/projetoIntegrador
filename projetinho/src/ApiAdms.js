@@ -44,7 +44,7 @@ export default function ApiAdms() {
         try {
             await axios.post("/Api", newAPI); //botar certo
             alert("API cadastrada com sucesso!");
-            setNewAPI({ name: "", desc: "",url_base: "", freq_mon_min: ""});// reseta e atualiza
+            setNewAPI({ name: "", desc: "",url_base: "", freq_mon_min: ""});//reseta e atualiza
           
         } catch (error) {
             console.error("Erro ao cadastrar API:", error);

@@ -12,24 +12,30 @@ import ListaUsuarios from './ListaUsuarios';
 export default function Lateral() {
     const [logado, setLogado] = React.useState(false);
     const [isAdmin, setIsAdmin] = React.useState(false);
-    const [telaAtiva, setTelaAtiva] = React.useState('login'); 
+    const [telaAtiva, setTelaAtiva] = React.useState('login');
+
+    const handleDeslogar = () => {
+        setLogado(false);
+        setTelaAtiva('login');
+    };
 
     const telas = {
-        login: <Login setLogado={setLogado} setIsAdmin={setIsAdmin} />, //passa por aqui os status
+        login: <Login setLogado={setLogado} setIsAdmin={setIsAdmin} setTelaAtiva={setTelaAtiva} />,
         apis: <Apis />,
-        conf: <Conf setLogado={setLogado} setTelaAtiva={setTelaAtiva}/>,
+        conf: <Conf setLogado={setLogado} setTelaAtiva={setTelaAtiva} />,
         adms: <Adms />,
         apiAdms: <ApiAdms />,
         usuarios: <ListaUsuarios />,
     };
 
     const botoes = [
-        { label: 'Login', tela: 'login', precisaLogin: false },
+        { label: 'Login', tela: 'login', precisaLogin: false, esconderSeLogado: true },
         { label: 'APIs', tela: 'apis', precisaLogin: true },
         { label: 'Admin APIs', tela: 'apiAdms', precisaLogin: true, precisaAdmin: true },
         { label: 'Usuários', tela: 'usuarios', precisaLogin: true, precisaAdmin: true },
         { label: 'Administrar Usuários', tela: 'adms', precisaLogin: true, precisaAdmin: true },
         { label: 'Configurações', tela: 'conf', precisaLogin: true },
+        { label: 'Sair', precisaLogin: true, acao: handleDeslogar },//acao faz acontecer as paradas, bom pra debug
     ];
 
     return (
@@ -51,7 +57,9 @@ export default function Lateral() {
             <Cabecalho />
 
             {botoes.map((botao, index) => {
-                const podeExibir = !botao.precisaLogin || (logado && (!botao.precisaAdmin || isAdmin));
+                const podeExibir =
+                    (!botao.precisaLogin || (logado && (!botao.precisaAdmin || isAdmin))) &&
+                    !(botao.esconderSeLogado && logado);
 
                 if (!podeExibir) return null;
 
@@ -59,7 +67,13 @@ export default function Lateral() {
                     <ToggleButton
                         key={index}
                         value="check"
-                        onClick={() => setTelaAtiva(botao.tela)}
+                        onClick={() => {
+                            if (botao.acao) {
+                                botao.acao(); //executa acao do botao
+                            } else {
+                                setTelaAtiva(botao.tela); //troca a tela
+                            }
+                        }}
                         sx={{
                             height: '10vh',
                             boxShadow: 1,

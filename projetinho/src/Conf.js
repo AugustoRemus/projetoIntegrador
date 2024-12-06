@@ -4,55 +4,76 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-export default function Conf({setLogado, setTelaAtiva}) {
-    //salva
+export default function Conf({ setLogado, setTelaAtiva }) {
     const [formData, setFormData] = useState({
         nome: "",
         email: "",
         numero: "",
-        status: "",
+    });
+
+    const [formLogin, setFormLogin] = useState({
         usuario: "",
         senha: "",
     });
 
-    //atualiza quando escreve
+
+
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        if (formLogin.hasOwnProperty(name)) {
+            setFormLogin((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        } else {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
     };
 
-    //manda pro back
-    const handleSave = async () => {
+
+
+    const handleSaveDados = async () => {
         try {
-            const response = await axios.post("http://localhost:3000", formData);
+            await axios.post("localhost:3000/lugaprasalvar", formData);
             alert("Dados salvos com sucesso!");
-            console.log(response.data);
         } catch (error) {
             console.error("Erro ao salvar dados:", error);
             alert("Erro ao salvar os dados.");
         }
     };
 
+    const handleSaveLogin = async () => {
+        
+        handleDeslogar();  //por enqianto trocar quando rotas prontas
+        /*
+        try {
+            await axios.post("localhost:3000/lugarprasalvarlogin", formLogin);//pesquisar
+            alert("Dados de login salvos com sucesso. Por favor, relogue.");
+            handleDeslogar();
+        } catch (error) {
+            console.error("Erro ao salvar dados de login:", error);
+            alert("Erro ao salvar os dados de login.");
+        }
+            */
+    };
 
 
-    const handleDeslogar = async () =>{
 
+
+    const handleDeslogar = () => {
         setLogado(false);
-        setTelaAtiva('login')
-
-    }
-
-
+        setTelaAtiva("login");
+    };
 
     return (
         <Box
             sx={{
                 width: '85vw',
                 height: '90vh',
-                //margin: 'auto',
                 position: 'fixed',
                 top: '10vh',
                 left: '10vw',
@@ -64,11 +85,9 @@ export default function Conf({setLogado, setTelaAtiva}) {
                 alignItems: 'center',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                 borderRadius: '8px',
-                paddingLeft: '2.5vw',
-                paddingRight: '3vw'
+                padding: '2.5vw 3vw',
             }}
         >
-          
             <Box
                 component="form"
                 sx={{
@@ -81,7 +100,9 @@ export default function Conf({setLogado, setTelaAtiva}) {
                 noValidate
                 autoComplete="off"
             >
-                  <h1>Configurações do Usuário</h1>
+                <h1>Configurações do Usuário</h1>
+
+
                 <TextField
                     id="nome"
                     label="Nome"
@@ -90,6 +111,7 @@ export default function Conf({setLogado, setTelaAtiva}) {
                     onChange={handleChange}
                     variant="standard"
                 />
+
                 <TextField
                     id="email"
                     label="Email"
@@ -98,6 +120,7 @@ export default function Conf({setLogado, setTelaAtiva}) {
                     onChange={handleChange}
                     variant="standard"
                 />
+
                 <TextField
                     id="numero"
                     label="Número"
@@ -107,14 +130,23 @@ export default function Conf({setLogado, setTelaAtiva}) {
                     variant="standard"
                     type="number"
                 />
-                
-                <h1>Configurações de Login</h1>
 
+                <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 3 }}
+                    onClick={handleSaveDados}
+                >
+                    Salvar Dados
+                </Button>
+
+
+                <h1>Configurações de Login</h1>
                 <TextField
                     id="usuario"
                     label="Novo nome de Usuário"
                     name="usuario"
-                    value={formData.usuario}
+                    value={formLogin.usuario}
                     onChange={handleChange}
                     variant="standard"
                 />
@@ -123,34 +155,21 @@ export default function Conf({setLogado, setTelaAtiva}) {
                     id="senha"
                     label="Nova senha"
                     name="senha"
-                    value={formData.senha}
+                    value={formLogin.senha}
                     onChange={handleChange}
                     variant="standard"
                 />
-
-
-
-
-
+                <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 3 }}
+                    onClick={handleSaveLogin}
+                >
+                    Salvar Login
+                </Button>
             </Box>
-            <Button
-                variant="contained"
-                color="primary"
-                sx={{ mt: 3 }}
-                onClick={handleSave}
-            >
-                Salvar
-            </Button>
 
-            <Button
-            
-                variant="contained"
-                color="error"
-                sx={{ mt: 3 }}
-                onClick={handleDeslogar}
-            >
-                Deslogar
-            </Button>
+           
         </Box>
     );
 }

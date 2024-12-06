@@ -1,21 +1,14 @@
 import React from "react";
 import axios from "axios";
-import {
-    Alert,
-    Box,
-    Button,
-    Snackbar,
-    Stack,
-    TextField,
-} from "@mui/material";
+import { Alert, Box, Button, Snackbar, Stack, TextField } from "@mui/material";
 
-export default function Login(props) {
+//ta recebendo diretamente os coisos
+export default function Login({ setLogado, setIsAdmin }) {
     const [username, setUsername] = React.useState("");
     const [passwd, setPasswd] = React.useState("");
     const [openMessage, setOpenMessage] = React.useState(false);
     const [messageText, setMessageText] = React.useState("");
     const [messageSeverity, setMessageSeverity] = React.useState("success");
-
 
 
     async function enviaLogin(event) {
@@ -25,14 +18,10 @@ export default function Login(props) {
                 username: username,
                 password: passwd,
             });
-            if (response.status >= 200 && response.status < 300) { //
-                // Salva o token JWT na sessão
-				localStorage.setItem("token", response.data.token);
-				// seta o estado do login caso tudo deu certo
-				props.handleLogin(true);
-				console.log(props.user);
-			} else {
-				// falha
+            if (response.status >= 200 && response.status < 300) {
+                localStorage.setItem("token", response.data.token);
+                console.log("Usuário logado com sucesso");
+            } else {
                 console.error("Falha na autenticação");
             }
         } catch (error) {
@@ -43,22 +32,27 @@ export default function Login(props) {
         }
     }
 
-    function cancelaLogin() {
-        setUsername("");
-        setPasswd("");
-        setOpenMessage(true);
-        setMessageText("Login cancelado!");
-        setMessageSeverity("warning");
-    }
 
-    function handleCloseMessage(_, reason) {
-        if (reason === "clickaway") {
-            return;
+    //cuida do dbug, tirar no final
+    function handleDebug(action) {
+        switch (action) {
+            case "logar":
+                setLogado(true);
+                break;
+            case "deslogar":
+                setLogado(false);
+                break;
+            case "virarAdm":
+                setIsAdmin(true);
+                break;
+            case "desviarAdm":
+                setIsAdmin(false);
+                break;
+            default:
+                break;
         }
-        setOpenMessage(false);
     }
 
-    const isFormValid = username.trim() !== "" && passwd.trim() !== "";  //olha ignorando os espaços em branco
 
     return (
         <Box
@@ -79,93 +73,65 @@ export default function Login(props) {
                 borderRadius: '8px',
             }}
         >
+
+
+
             <h1>Tela de Login</h1>
             <Stack spacing={2} sx={{ width: '60%' }}>
                 <TextField
                     required
-                    id="username-input"
                     label="Usuário"
-                    size="medium"
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
                 />
+
                 <TextField
                     required
-                    id="passwd-input"
                     label="Senha"
                     type="password"
-                    size="medium"
                     value={passwd}
                     onChange={(event) => setPasswd(event.target.value)}
                 />
+
+
                 <Stack direction="row" spacing={3} justifyContent="center">
                     <Button
                         variant="contained"
                         color="primary"
                         onClick={enviaLogin}
-                        disabled={!isFormValid}   //olha se tao vazio
-                        sx={{ width: '100px', fontSize: '1rem' }}
                     >
                         Enviar
                     </Button>
                     <Button
                         variant="outlined"
                         color="error"
-                        onClick={cancelaLogin}
-                        sx={{ width: '100px', fontSize: '1rem' }}
+                        onClick={() => {
+                            setUsername("");
+                            setPasswd("");
+                        }}
                     >
                         Cancelar
                     </Button>
                 </Stack>
-
-                <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={cancelaLogin}
-                        sx={{ width: '100px', fontSize: '1rem' }}
-                    >
-                        Debug:logar
-                    </Button>
-
-                    <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={cancelaLogin}
-                        sx={{ width: '100px', fontSize: '1rem' }}
-                    >
-                        Debug:Deslogar
-                    </Button>
-
-
-                    <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={cancelaLogin}
-                        sx={{ width: '100px', fontSize: '1rem' }}
-                    >
-                        Debug:virarAdm
-                    </Button>
-
-
-                    <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={cancelaLogin}
-                        sx={{ width: '100px', fontSize: '1rem' }}
-                    >
-                        Debug:desviarAdm
-                    </Button>
                 
 
 
-
+                <Stack direction="row" spacing={2} //botoes do debug
+                >
+                    <Button onClick={() => handleDebug("logar")}>Debug: Logar</Button>
+                    <Button onClick={() => handleDebug("deslogar")}>Debug: Deslogar</Button>
+                    <Button onClick={() => handleDebug("virarAdm")}>Debug: Virar Admin</Button>
+                    <Button onClick={() => handleDebug("desviarAdm")}>Debug: Desviar Admin</Button>
+                </Stack>
             </Stack>
             <Snackbar
                 open={openMessage}
                 autoHideDuration={6000}
-                onClose={handleCloseMessage}
+                onClose={() => setOpenMessage(false)}
             >
-                <Alert severity={messageSeverity} onClose={handleCloseMessage}>
+
+
+                <Alert severity={messageSeverity}>
                     {messageText}
                 </Alert>
             </Snackbar>

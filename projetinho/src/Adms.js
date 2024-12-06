@@ -3,7 +3,7 @@ import axios from "axios";
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Stack } from "@mui/material";
 
 export default function Adms() {
-    const [listaUsuarios, setListaUsuarios] = useState([]); //lista dos usuario
+   
 
 
     const [deleteId, setDeleteId] = useState(""); //guarda o id pra deletar

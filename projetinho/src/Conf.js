@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-export default function Conf() {
+export default function Conf({setLogado, setTelaAtiva}) {
     //salva
     const [formData, setFormData] = useState({
         nome: "",
@@ -35,6 +35,15 @@ export default function Conf() {
             alert("Erro ao salvar os dados.");
         }
     };
+
+
+
+    const handleDeslogar = async () =>{
+
+        setLogado(false);
+        setTelaAtiva('login')
+
+    }
 
 
 
@@ -131,6 +140,16 @@ export default function Conf() {
                 onClick={handleSave}
             >
                 Salvar
+            </Button>
+
+            <Button
+            
+                variant="contained"
+                color="error"
+                sx={{ mt: 3 }}
+                onClick={handleDeslogar}
+            >
+                Deslogar
             </Button>
         </Box>
     );

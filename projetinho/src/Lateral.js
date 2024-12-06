@@ -5,54 +5,31 @@ import Login from './Login';
 import Apis from './Apis';
 import Conf from './Conf';
 import Adms from './Adms';
-import Cabecalho from "./Cabecalho"
+import Cabecalho from "./Cabecalho";
 import ApiAdms from './ApiAdms';
 import ListaUsuarios from './ListaUsuarios';
 
 export default function Lateral() {
-
     const [logado, setLogado] = React.useState(false);
-    const [isAdmin, setIsAdmin] = React.useState(false); 
-    const [telaAtiva, setTelaAtiva] = React.useState('login'); //aqui fica a tela atual
+    const [isAdmin, setIsAdmin] = React.useState(false);
+    const [telaAtiva, setTelaAtiva] = React.useState('login'); 
 
-    //as tela ficam  aqui
     const telas = {
-        login: <Login />,
+        login: <Login setLogado={setLogado} setIsAdmin={setIsAdmin} />, //passa por aqui os status
         apis: <Apis />,
-        conf: <Conf />,
+        conf: <Conf setLogado={setLogado} setTelaAtiva={setTelaAtiva}/>,
         adms: <Adms />,
         apiAdms: <ApiAdms />,
         usuarios: <ListaUsuarios />,
     };
 
-    //login debug
-    const mudarStatusLogin = () => {
-        setLogado((prevLogado) => !prevLogado);
-        if(!logado){
-            setTelaAtiva('apis');//da pra usar em um botao d dar deslogin
-        }
-        else{
-            setTelaAtiva('login');
-        }
-        
-        alert(!logado ? 'Logado': 'Deslogado.');
-    };
-
-    const mudarPermissao = () =>{
-        setIsAdmin((prevIsAdmin) => (!prevIsAdmin)); 
-        alert(!isAdmin ? 'adm': 'normal');
-    }
-
-    
     const botoes = [
-        { label: 'Login', tela: 'login', precisaLogin: false},
-        { label: 'Apis', tela: 'apis', precisaLogin: true },
+        { label: 'Login', tela: 'login', precisaLogin: false },
+        { label: 'APIs', tela: 'apis', precisaLogin: true },
         { label: 'Admin APIs', tela: 'apiAdms', precisaLogin: true, precisaAdmin: true },
-        { label: 'Conf', tela: 'conf', precisaLogin: true },
-        { label: 'Usuarios', tela: 'usuarios', precisaLogin: true, precisaAdmin: true },
-        { label: 'Administrar Usuarios', tela: 'adms', precisaLogin: true, precisaAdmin: true },
-        { label: 'Logar/Deslogar', acao: mudarStatusLogin }, //debug login
-        { label: 'Admin/ n Adminin', acao: mudarPermissao },//debug adm
+        { label: 'Usuários', tela: 'usuarios', precisaLogin: true, precisaAdmin: true },
+        { label: 'Administrar Usuários', tela: 'adms', precisaLogin: true, precisaAdmin: true },
+        { label: 'Configurações', tela: 'conf', precisaLogin: true },
     ];
 
     return (
@@ -73,26 +50,16 @@ export default function Lateral() {
         >
             <Cabecalho />
 
-           
-
-           
             {botoes.map((botao, index) => {
-                //olha se pode mostrar
                 const podeExibir = !botao.precisaLogin || (logado && (!botao.precisaAdmin || isAdmin));
 
-                if (!podeExibir) return null;//so carrega se o usuario pode ver
+                if (!podeExibir) return null;
 
                 return (
                     <ToggleButton
                         key={index}
                         value="check"
-                        onChange={() => {
-                            if (botao.acao) {
-                                botao.acao();//faz algo caso tenha acao
-                            } else {
-                                setTelaAtiva(botao.tela);//escolhe a tela
-                            }
-                        }}
+                        onClick={() => setTelaAtiva(botao.tela)}
                         sx={{
                             height: '10vh',
                             boxShadow: 1,
@@ -104,10 +71,9 @@ export default function Lateral() {
                 );
             })}
 
-            
             <Box
                 sx={{
-                    flex: 1,//tela ativad
+                    flex: 1,
                     bgcolor: '#fff',
                     width: '90vw',
                     marginLeft: '10vw',

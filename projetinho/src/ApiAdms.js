@@ -10,10 +10,11 @@ export default function ApiAdms() {
 
 
     const [newAPI, setNewAPI] = useState({
-        name: "",
-        desc: "",
+        nome: "",
+        descricao: "",
         url_base: "",
         freq_mon_min: "",
+        //data_cadastro: "",              //se pa mudar os nomes
       
     });//dados da nova api
 
@@ -21,7 +22,7 @@ export default function ApiAdms() {
 
     const fetchData = async () => {
         try {
-            const res = await axios.get("/apis"); //botar certo
+            const res = await axios.get("http://localhost:3000/api"); //botar certo
             setListaApis(res.data);//lista d obj
         } catch (error) {
             console.error("Erro ao buscar dados das APIs:", error);
@@ -34,20 +35,22 @@ export default function ApiAdms() {
 
     //cadastrando nova api
     const handleCreateAPI = async () => {
-        const { name, desc,url_base, freq_mon_min } = newAPI;
 
-        if (!name || !desc || !url_base || freq_mon_min) {
+        const { nome, descricao, url_base, freq_mon_min } = newAPI;
+
+        if (!nome || !descricao || !url_base || !freq_mon_min) {
             alert("Por favor, preencha todos os campos para cadastrar uma nova API.");
             return;
         }
 
         try {
-            await axios.post("/Api", newAPI); //botar certo
+            await axios.post("http://localhost:3000/api", newAPI); //botar certo
             alert("API cadastrada com sucesso!");
-            setNewAPI({ name: "", desc: "",url_base: "", freq_mon_min: ""});//reseta e atualiza
+            setNewAPI({ nome: "", descricao: "",url_base: "", freq_mon_min: ""});//reseta e atualiza
           
         } catch (error) {
             console.error("Erro ao cadastrar API:", error);
+            console.log(JSON.stringify(error))
             alert("Erro ao cadastrar API.");
         }
     };
@@ -56,13 +59,15 @@ export default function ApiAdms() {
 
     //deleta api
     const handleDelete = async () => {
+
         if (!deleteId) {
             alert("Por favor, insira o Id da API que deseja deletar.");
             return;
         }
 
         try {
-            await axios.delete(`/API/${deleteId}`); //trocar
+
+            await axios.delete(`http://localhost:3000/api/${deleteId}`); 
             alert("API deletada com sucesso!");
             setDeleteId(""); //reseta
           
@@ -81,7 +86,7 @@ export default function ApiAdms() {
             sx={{
                 width: '85vw',
                 height: '90vh',
-                //margin: 'auto',
+
                 position: 'fixed',
                 top: '10vh',
                 left: '10vw',
@@ -110,15 +115,15 @@ export default function ApiAdms() {
             <Stack spacing={2} sx={{ width: "100%" }}>
                 <TextField
                     label="Nome API"//pega o nome
-                    value={newAPI.name}
-                    onChange={(e) => setNewAPI({ ...newAPI, name: e.target.value })}
+                    value={newAPI.nome}
+                    onChange={(e) => setNewAPI({ ...newAPI, nome: e.target.value })}
                 />
 
 
                     <TextField
                     label="Descrição"
-                    value={newAPI.desc}
-                    onChange={(e) => setNewAPI({ ...newAPI, desc: e.target.value })}
+                    value={newAPI.descricao}
+                    onChange={(e) => setNewAPI({ ...newAPI, descricao: e.target.value })}
                 />
 
             <TextField

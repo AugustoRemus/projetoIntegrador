@@ -31,7 +31,7 @@ export default function Lateral() {
     const botoes = [
         { label: 'Login', tela: 'login', precisaLogin: false, esconderSeLogado: true },
         { label: 'APIs', tela: 'apis', precisaLogin: true },
-        { label: 'Admin APIs', tela: 'apiAdms', precisaLogin: true, precisaAdmin: true },
+        { label: 'Administrar APIs', tela: 'apiAdms', precisaLogin: true, precisaAdmin: true },
         { label: 'Usuários', tela: 'usuarios', precisaLogin: true, precisaAdmin: true },
         { label: 'Administrar Usuários', tela: 'adms', precisaLogin: true, precisaAdmin: true },
         { label: 'Configurações', tela: 'conf', precisaLogin: true },

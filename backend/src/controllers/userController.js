@@ -10,6 +10,7 @@ import {
   atualizarUsuarioModelo,
   excluirUsuarioModelo,
   atualizarSenhaUsuarioModelo,
+  buscarUsuarioLogin,
 } from '../models/userModels.js';
 import { checkHash, hash } from '../authentication.js';
 
@@ -53,7 +54,7 @@ export async function buscarUsuarioPorId(req, res) {
 
 export async function cadastrarUsuario(req, res) {
   try {
-    if (!req.body.senha) {
+    if (!req.body) {
       res.status(400).json({ Erro: 'Senha não informada ou dados inválidos' });
       return;
     }
@@ -113,23 +114,16 @@ export async function excluirUsuario(req, res) {
   }
 }
 
-export async function buscarUsuarioLogin(login) {
-  return await db.oneOrNone(
-    'SELECT codigo, nome, email, telefone, login, sigla_grupo, senha FROM usuario WHERE login = $1;',
-    [login]
-  );
-}
-
 export async function autenticarUsuario(req, res) {
   const { login, senha } = req.body;
 
   try {
-    const usuario = await buscarUsuarioPorId(login);
+    const usuario = await buscarUsuarioLogin(login);
     const senhaCorreta = checkHash(senha, usuario.senha);
 
     if (senhaCorreta) {
       const token = await gerarTokenAcesso(usuario);
-      res.status(200).json({ message: token });
+      res.status(200).json({ token: token, codigo: usuario.codigo, cargo: usuario.sigla_grupo });
     } else {
       res.status(401).json({ Erro: 'Usuário ou senha inválidos' });
     }
@@ -223,5 +217,3 @@ export async function atualizarSenhaUsuario(id) {
     res.status(500).json({ Erro: 'Falha na requisição' });
   }
 }
-
-

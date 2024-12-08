@@ -9,7 +9,6 @@ import requestRoutes from './routes/requestRoutes.js';
 import cors from 'cors';
 import { iniciarJobs } from './models/requestModel.js';
 import publicRoutes from './routes/publicRoutes.js';
-import { autenticarUsuario } from './controllers/userController.js';
 
 dotenv.config();
 const app = express();
@@ -26,6 +25,6 @@ requestRoutes(app);
 
 iniciarJobs();
 
-app.listen(3000, () => {
+app.listen(3005, () => {
   console.log('servidor escutando');
 });

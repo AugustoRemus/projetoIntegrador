@@ -5,6 +5,12 @@ import fs, { createWriteStream } from "fs";
 import { notificarUsuarios } from '../controllers/userController.js';
 import db from '../database.js';
 
+/*const wss = new WebSocket.Server({port:8080});
+
+wss.on('connection', (ws) => {
+  console.log('Cliente conectado via WebSocket');
+  ws.on('close', () => console.log('Cliente desconectado'));
+});*/
 const apiJobs = [];
 
 export async function encontrarRequestModelo(id) {
@@ -66,6 +72,13 @@ export async function adicionaApiJob(id, intervalo) {
         const api = await db.one(`SELECT * FROM api WHERE codigo = $1`, [id]);
         console.log(api);
         notificarUsuarios(api, usuarios);
+
+        /*const mensagem = {id, codigo_status};
+        wss.clients.forEach((client) => {
+          if(client.readyState === WebSocket.OPEN){
+            client.send(JSON.stringify(mensagem));
+          }
+        })*/
       }
     } catch (erro) {
       console.error(erro.message);

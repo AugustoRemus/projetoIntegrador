@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import db from '../database.js';
 import { atualizaApiJob } from './requestModel.js';
+import axios from 'axios';
 
 //retorna uma API com ID
 export async function encontrarApiModelo(id) {
@@ -44,15 +45,12 @@ export async function excluirApiModelo(id) {
 
 export async function verificaStatusModelo(id) {
   try {
-    const resultado = await db.query(`SELECT url_base FROM api WHERE codigo  = $1`, [id]);
-    const url = resultado[0].url_base;
-    const response = await fetch(url);
+    const resultado = await db.one(`SELECT url_base FROM api WHERE codigo  = $1`, [id]);
+    const url = resultado.url_base;
+    const response = await axios.get(url);
     return response.status;
-  
   } catch (erro) {
-    console.error(erro.message);
+    console.error(erro);
+    return 'ERRO: URL INVÁLIDA';
   }
-  
 }
-
-

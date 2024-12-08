@@ -4,7 +4,7 @@ import {
   cadastrarApiModelo,
   atualizarApiModelo,
   excluirApiModelo,
-  verificaStatusModelo
+  verificaStatusModelo,
 } from '../models/apiModels.js';
 
 export async function listarApis(req, res) {
@@ -71,13 +71,12 @@ export async function excluirApi(req, res) {
 }
 
 export async function verificaStatus(req, res) {
-  try{
-    const id = req.params.id
+  try {
+    const id = req.params.id;
     const status = await verificaStatusModelo(id);
-    res.status(200).json(status);
+    res.status(200).json({ status: status });
   } catch (error) {
     console.error(error);
     res.status(500).json({ erro: 'Falha na requisição' });
   }
 }
-

@@ -1,120 +1,223 @@
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-import { listarUsuariosModelo, encontrarUsuarioModelo, cadastrarUsuarioModelo, atualizarUsuarioModelo, excluirUsuarioModelo, autenticarUsuarioModelo, gerarTokenAcesso } from "../models/userModels.js";
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
+import twilio from 'twilio';
+import { listar, buscarPorId, criar, atualizar, excluir } from './utils.js';
+import {
+  listarUsuariosModelo,
+  encontrarUsuarioModelo,
+  cadastrarUsuarioModelo,
+  atualizarUsuarioModelo,
+  excluirUsuarioModelo,
+  atualizarSenhaUsuarioModelo,
+} from '../models/userModels.js';
+import { checkHash, hash } from '../authentication.js';
 
 dotenv.config();
 
-export async function listarUsuarios (req, res) {
-    try{
-        const resultado = await listarUsuariosModelo();
-        res.status(200).json(resultado);
-    } catch (erro){
-        console.error(erro.message);
-        res.status(500).json({"Erro": "Falha na requisição"});
-    }
-    
-};
+const transporter = nodemailer.createTransport({
+  host: 'sandbox.smtp.mailtrap.io',
+  port: 587,
+  secure: false, // usar SSL
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
-export async function listarUsuarioPorId (req, res) {
+export async function listarUsuarios(req, res) {
+  try {
+    const usuarios = await listarUsuariosModelo();
+    res.status(200).json(usuarios);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ Erro: 'Falha na requisição' });
+  }
+}
+
+export async function buscarUsuarioPorId(req, res) {
+  try {
     const id = req.params.id;
 
-    try{
-        const usuarioDesejado = await encontrarUsuarioModelo(id);
-        if(!usuarioDesejado){
-            res.status(404).json("Usuário não encontrado");
-        } else {
-            res.status(200).json(usuarioDesejado);
-        }
-    } catch (erro) {
-        console.error(erro.message);
-        res.status(500).json({"Erro": "Falha na requisição"});
+    const usuario = await encontrarUsuarioModelo(id);
+    if (usuario) {
+      res.status(200).json(usuario);
+    } else {
+      res.status(404).json({ Erro: 'Usuário não encontrado' });
     }
-};
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ Erro: 'Falha na requisição' });
+  }
+}
 
 export async function cadastrarUsuario(req, res) {
+  try {
+    const senha = req.body.senha;
     const novoUsuario = req.body;
 
-    try{
-        const usuarioCadastrado = await cadastrarUsuarioModelo(novoUsuario);
-        res.status(201).json(usuarioCadastrado);
-    } catch (erro) {
-        console.error(erro.message);
-        res.status(500).json({"Erro":"Falha na requisição"});
+    if (!senha) {
+      res.status(400).json({ Erro: 'Senha não informada' });
+      return;
     }
 
-};
+    const usuario = await cadastrarUsuarioModelo(novoUsuario, hash(senha));
 
-//ainda não funciona
-export async function atualizarUsuario(req, res){
+    const mensagem = `
+    Seja bem-vindo, ${usuario.nome}!
+    
+    Você receberá alertas por esse endereço de e-mail a partir de agora.
+    `;
+
+    await enviarEmail(usuario.email, `${usuario.nome}, bem-vindo ao time!`, mensagem);
+
+    res.status(201).json(usuario);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ Erro: 'Falha na requisição' });
+  }
+}
+
+export async function atualizarUsuario(req, res) {
+  try {
     const id = req.params.id;
-    const valorAtualizado = req.body;
+    const valoresAtualizados = req.body;
+    const user = await atualizarUsuarioModelo(id, valoresAtualizados);
 
-    try{
-        const usuarioDesejado = await encontrarUsuarioModelo(id);
-        if(!usuarioDesejado){
-            res.status(404).json("Usuário não encontrado");
-        } else {
-            const usuarioAtualizado = await atualizarUsuarioModelo(id, valorAtualizado);
-            res.status(200).json("Usuário atualizado com sucesso" + usuarioAtualizado);
-        }
-    } catch (erro){
-        console.error(erro.message);
-        res.status(500).json({"Erro":"Falha na requisição"});
-    }
-};
+    const mensagem = `
+        Olá, ${user.nome}!
 
-export async function excluirUsuario(req, res){
+        Sua conta foi atualizada e você receberá alertas neste e-mail a partir de agora.
+        `;
+    await enviarEmail(user.email, `Suas informações mudaram`, mensagem);
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ Erro: 'Falha na requisição' });
+  }
+}
+
+export async function excluirUsuario(req, res) {
+  try {
     const id = req.params.id;
+    await excluirUsuarioModelo(id);
+    res.status(200).json({ message: 'Usuário excluído com sucesso' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ Erro: 'Falha na requisição' });
+  }
+}
 
-    try{
-        const usuarioDesejado = await encontrarUsuarioModelo(id);
-        if(!usuarioDesejado){
-            res.status(404).json("Usuário não encontrado");
-        } else {
-            await excluirUsuarioModelo(id);
-            res.status(200).json("Usuário excluído com sucesso" + usuarioDesejado);
-        }
-    } catch (erro){
-        console.error(erro.message);
-        res.status(500).json({"Erro":"Falha na requisição"});
-    }
-};
+export async function buscarUsuarioLogin(login) {
+  return await db.oneOrNone(
+    'SELECT codigo, nome, email, telefone, login, sigla_grupo, senha FROM usuario WHERE login = $1;',
+    [login]
+  );
+}
 
 export async function autenticarUsuario(req, res) {
-    const {login, senha} = req.body;
+  const { login, senha } = req.body;
 
-    try{
-        const usuario = autenticarUsuarioModelo(login, senha);
+  try {
+    const usuario = await buscarUsuarioPorId(login);
+    const senhaCorreta = checkHash(senha, usuario.senha);
 
-        if(usuario){
-            const token = await gerarTokenAcesso(usuario);
-            res.status(201).json({message: token});
-        } else {
-            res.status(401).json({"Erro": "Usuário ou senha inválidos"});
-        }
-    } catch(erro){
-        console.error(erro.message);
-        res.status(500).json({"Erro":"Falha na requisição"});
+    if (senhaCorreta) {
+      const token = await gerarTokenAcesso(usuario);
+      res.status(200).json({ message: token });
+    } else {
+      res.status(401).json({ Erro: 'Usuário ou senha inválidos' });
     }
-   
+  } catch (erro) {
+    console.error(erro.message);
+    res.status(500).json({ Erro: 'Falha na requisição' });
+  }
+}
+
+export const tokenAutenticado = (req, res, next) => {
+  const token = req.headers['authorization'];
+
+  if (!token) {
+    return res.status(403).json('Token não fornecido');
+  }
+
+  jwt.verify(token, process.env.SECRET_KEY, (erro, usuario) => {
+    if (erro) {
+      return res.status(403).json('Token inválido!');
+    } else {
+      req.usario = usuario;
+      next();
+    }
+  });
 };
 
-export const tokenAutenticado = (req, res, next ) => {
-    const token = req.headers['authorization'];
+export async function enviarEmail(destinatario, assunto, mensagem) {
+  try {
+    //configura o objeto
+    const opcoesEnvio = {
+      from: 'Monitor de API lauramesquitabruel@gmail.com',
+      to: destinatario,
+      subject: assunto,
+      text: mensagem,
+    };
+    //envia o email
+    transporter.sendMail(opcoesEnvio, function (error, info) {
+      if (error) {
+        console.error('Erro:', error);
+      } else {
+        console.log('Email enviado:', info.response);
+      }
+    });
+  } catch (error) {
+    console.error(`Erro ao enviar e-mail para ${destinatario}:`, error.message);
+  }
+}
 
-    if(!token){
-        return res.status(403).json("Token não fornecido");
+export async function notificarUsuarios(api, usuarios) {
+  for (const usuario of usuarios) {
+    const mensagem = `
+            Olá, ${usuario.nome},
+                
+            A API "${api.nome}" está fora do ar.
+            URL Base: ${api.url_base}
+            Descrição: ${api.descricao}
+                
+            Por favor, tome as providências necessárias.
+        `;
+
+    await enviarEmail(usuario.email, `Alerta: API "${api.nome}" Inativa`, mensagem);
+  }
+}
+
+export async function gerarTokenAcesso(usuario) {
+  const token = jwt.sign(
+    { id: usuario.codigo, login: usuario.login, grupo: usuario.sigla_grupo },
+    process.env.SECRET_KEY,
+    {
+      expiresIn: '8h',
+    }
+  );
+
+  return token;
+}
+
+export async function atualizarSenhaUsuario(id) {
+  try {
+    const id = req.params.id;
+    const novaSenha = req.body.senha;
+
+    if (!novaSenha) {
+      res.status(400).json({ Erro: 'Senha não informada' });
+      return;
     }
 
-    jwt.verify(token, process.env.SECRET_KEY, (erro, usuario) => {
-        if(erro){
-            return res.status(403).json("Token inválido!");
-        } else {
-            req.usario = usuario;
-            next();
-        }
-    }); 
-}; 
-
+    await atualizarSenhaUsuarioModelo(id, hash(novaSenha));
+    res.status(200).json({ message: 'Senha atualizada com sucesso' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ Erro: 'Falha na requisição' });
+  }
+}
 
 

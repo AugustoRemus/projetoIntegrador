@@ -1,16 +1,24 @@
-/*import express from "express";
+import express from 'express';
+import {
+  listarStatus,
+  cadastrarStatus,
+  atualizarStatus,
+  excluirStatus,
+  buscarStatusPorId,
+} from '../controllers/statusController.js';
 
 const statusRoutes = (app) => {
-    app.use(express.json());
+  app.use(express.json());
 
-    app.get('/status', listarStatus);
+  app.get('/status', listarStatus);
 
-    app.post('/status', cadastarStatus);
+  app.get('/status/:id', buscarStatusPorId);
 
-    app.put('/status/:id', atualizarStatus);
+  app.post('/status', cadastrarStatus);
 
-    app.delete('/status/:id', excluirStatus);
+  app.put('/status/:id', atualizarStatus);
 
-}
+  app.delete('/status/:id', excluirStatus);
+};
 
-export default statusRoutes; */
+export default statusRoutes;

@@ -1,99 +1,71 @@
-import { listarApisModelo, encontrarApiModelo, cadastrarApiModelo, atualizarApiModelo, excluirApiModelo, verificaStatusApiModelo } from "../models/apiModels.js";
-import { notificarUsuarios } from "../models/userModels.js";
+import {
+  listarApisModelo,
+  encontrarApiModelo,
+  cadastrarApiModelo,
+  atualizarApiModelo,
+  excluirApiModelo,
+} from '../models/apiModels.js';
 
-export async function listarApis (req, res) {
-    try{
-        const resultado = await listarApisModelo();
-        res.status(200).json(resultado);
-    } catch (erro){
-        console.error(erro.message);
-        res.status(500).json({"Erro": "Falha na requisição"});
-    }
-    
-};
+export async function listarApis(req, res) {
+  try {
+    const apis = await listarApisModelo();
+    res.status(200).json(apis);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Falha na requisição' });
+  }
+}
 
-export async function listaApiPorId (req, res) {
+export async function buscarApiPorId(req, res) {
+  try {
     const id = req.params.id;
-
-    try{
-        const apiDesejada = await encontrarApiModelo(id);
-        if(!apiDesejada){
-            res.status(404).json("API não encontrada");
-        } else {
-            res.status(200).json(apiDesejada);
-        }
-    } catch (erro) {
-        console.error(erro.message);
-        res.status(500).json({"Erro": "Falha na requisição"});
+    const api = await encontrarApiModelo(id);
+    if (api) {
+      res.status(200).json(api);
+    } else {
+      res.status(404).json({ erro: 'API não encontrada' });
     }
-};
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Falha na requisição' });
+  }
+}
 
 export async function cadastrarApi(req, res) {
+  try {
     const novaApi = req.body;
+    const api = await cadastrarApiModelo(novaApi);
+    res.status(201).json(api);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Falha na requisição' });
+  }
+}
 
-    try{
-        const apiCadastrada = await cadastrarApiModelo(novaApi);
-        res.status(201).json(apiCadastrada);
-    } catch (erro) {
-        console.error(erro.message);
-        res.status(500).json({"Erro":"Falha na requisição"});
-    }
-
-};
-
-//ainda não funciona
-export async function atualizarApi(req, res){
+export async function atualizarApi(req, res) {
+  try {
     const id = req.params.id;
-    const atributo = req.params.atributo
     const valorAtualizado = req.body;
-
-    try{
-        const apiDesejada = await encontrarApiModelo(id);
-        if(!apiDesejada){
-            res.status(404).json("API não encontrada");
-        } else {
-            const apiAtualizada = await atualizarApiModelo(id, valorAtualizado, atributo);
-            res.status(200).json("API atualizada com sucesso" + apiAtualizada);
-        }
-    } catch (erro){
-        console.error(erro.message);
-        res.status(500).json({"Erro":"Falha na requisição"});
+    const api = await atualizarApiModelo(id, valorAtualizado);
+    if (api) {
+      res.status(200).json(api);
+    } else {
+      res.status(404).json({ erro: 'API não encontrada' });
     }
-};
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Falha na requisição' });
+  }
+}
 
-export async function excluirApi(req, res){
+export async function excluirApi(req, res) {
+  try {
     const id = req.params.id;
-
-    try{
-        const apiDesejada = await encontrarApiModelo(id);
-        if(!apiDesejada){
-            res.status(404).json("API não encontrada");
-        } else {
-            await excluirApiModelo(id);
-            res.status(200).json("API excluída com sucesso" + apiDesejada);
-        }
-    } catch (erro){
-        console.error(erro.message);
-        res.status(500).json({"Erro":"Falha na requisição"});
-    }
-};
-
-export async function verificaStatusApi(req, res){
-    const id = req.params.id;
-
-    try{
-        const ativa = false;
-        if(ativa){
-            res.status(200).json({"Status": "API ativa"});
-        } else {
-            const apiInativa = encontrarApiModelo(id);
-            res.status(200).json({"Status": "API fora do ar"});
-            notificarUsuarios(apiInativa);
-        }
-    } catch (erro){
-        console.error(erro.message);
-        res.status(500).json({"Erro":"Falha na requisição"});
-    }
-    
-};
+    await excluirApiModelo(id);
+    res.status(200).json({ mensagem: 'API excluída com sucesso' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Falha na requisição' });
+  }
+}
 

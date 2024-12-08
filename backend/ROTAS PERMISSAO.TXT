@@ -1,0 +1,38 @@
+GET /permissao
+retorna todas as permissoes
+
+mensagem retorno:
+[
+    {
+        "sigla": "SEXO",
+        "descricao": "anal"
+    }
+]
+
+GET /permissao/:sigla
+retorna uma ou nenhuma permissão
+
+mensagem de retorno:
+{
+    "sigla": "SEXO",
+    "descricao": "anal"
+}
+
+POST /permissao
+cria uma permissao
+
+body:
+{
+    "sigla": "SEXO",
+    "descricao": "anal"
+}
+
+PUT /permissao/:sigla
+atualiza uma permissão
+
+{
+    "descricao": "asdasd"
+}
+
+DELETE /permissao/:sigla
+deleta uma permissao

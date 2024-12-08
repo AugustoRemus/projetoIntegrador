@@ -1,17 +1,30 @@
-/*import express from "express";
-import {listarTipoUsuario}
+import express from 'express';
+import {
+  listarUserTypes,
+  cadastrarUserType,
+  atualizarUserType,
+  excluirUserType,
+  buscarUserTypePorId,
+  adicionarPermissaoCargo,
+  removerPermissaoCargo,
+} from '../controllers/userTypeController.js';
 
 const userTypeRoutes = (app) => {
-    app.use(express.json());
+  app.use(express.json());
 
-    app.get('/userType', listarTipoUsuario);
+  app.get('/cargo', listarUserTypes);
 
-    app.post('/userType', cadastarTipoUsuario);
+  app.get('/cargo/:id', buscarUserTypePorId);
 
-    app.put('/userType/:id', atualizarTipoUsuario);
+  app.post('/cargo', cadastrarUserType);
 
-    app.delete('/userType/:id', excluirTipoUsuario);
+  app.put('/cargo/:id', atualizarUserType);
 
-}
+  app.delete('/cargo/:id', excluirUserType);
 
-export default userTypeRoutes;*/
+  app.post('/cargo/add/:id', adicionarPermissaoCargo);
+
+  app.post('/cargo/remove/:id', removerPermissaoCargo);
+};
+
+export default userTypeRoutes;

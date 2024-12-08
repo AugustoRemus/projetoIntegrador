@@ -1,57 +1,82 @@
-export async function listarRequisicoes (req, res) {
-    try{
-        const resultado = await listarRequisicoesModelo();
-        res.status(200).json(resultado);
-    } catch (erro){
-        console.error(erro.message);
-        res.status(500).json({"Erro": "Falha na requisição"});
+import {
+  listarRequestsModelo,
+  encontrarRequestModelo,
+  cadastrarRequestModelo,
+  atualizarRequestModelo,
+  excluirRequestModelo,
+  encontrarRequestApiModelo,
+} from '../models/requestModel.js';
+
+export async function listarRequests(req, res) {
+  try {
+    const requests = await listarRequestsModelo();
+    res.status(200).json(requests);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Falha na requisição' });
+  }
+}
+
+export async function buscarRequestPorId(req, res) {
+  try {
+    const id = req.params.id;
+    const request = await encontrarRequestModelo(id);
+    if (request) {
+      res.status(200).json(request);
+    } else {
+      res.status(404).json({ erro: 'Requisição não encontrada' });
     }
-    
-};
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Falha na requisição' });
+  }
+}
 
-export async function cadastrarRequisicao(req, res) {
-    const novaRequisicao = req.body;
-    try{
-        const requisicaoCadastrada = await cadastrarRequisicaoModelo(novaRequisicao);
-        res.status(201).json(requisicaoCadastrada);
-    } catch (erro) {
-        console.error(erro.message);
-        res.status(500).json({"Erro":"Falha na requisição"});
-    }
+export async function cadastrarRequest(req, res) {
+  try {
+    const novoRequest = req.body;
+    const request = await cadastrarRequestModelo(novoRequest);
+    res.status(201).json(request);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Falha na requisição' });
+  }
+}
 
-};
-
-export async function atualizarRequisicao(req, res){
+export async function atualizarRequest(req, res) {
+  try {
     const id = req.params.id;
     const valorAtualizado = req.body;
-
-    try{
-        const requisicaoDesejada = await encontrarRequisicaoModelo(id);
-        if(!requisicaoDesejada){
-            res.status(404).json("Requisição não encontrada");
-        } else {
-            const reqAtualizada = await atualizarRequisicaoModelo(id, valorAtualizado);
-            res.status(200).json("Requisição atualizada com sucesso" + reqAtualizada);
-        }
-    } catch (erro){
-        console.error(erro.message);
-        res.status(500).json({"Erro":"Falha na requisição"});
+    const request = await atualizarRequestModelo(id, valorAtualizado);
+    if (request) {
+      res.status(200).json(request);
+    } else {
+      res.status(404).json({ erro: 'Requisição não encontrada' });
     }
-};
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Falha na requisição' });
+  }
+}
 
-export async function excluirUsuario(req, res){
+export async function excluirRequest(req, res) {
+  try {
     const id = req.params.id;
+    await excluirRequestModelo(id);
+    res.status(200).json({ mensagem: 'Requisição excluída com sucesso' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Falha na requisição' });
+  }
+}
 
-    try{
-        const usuarioDesejado = await encontrarUsuarioModelo(id);
-        if(!usuarioDesejado){
-            res.status(404).json("Usuário não encontrado");
-        } else {
-            await excluirUsuarioModelo(id);
-            res.status(200).json("Usuário excluído com sucesso" + usuarioDesejado);
-        }
-    } catch (erro){
-        console.error(erro.message);
-        res.status(500).json({"Erro":"Falha na requisição"});
-    }
-};
+export async function encontrarRequestPorApi(req, res) {
+  try {
+    const idApi = req.params.id;
+    const requests = await encontrarRequestApiModelo(idApi);
+    res.status(200).json(requests);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Falha na requisição' });
+  }
+}

@@ -1,19 +1,27 @@
-/*import express from "express";
-import {listarRe}
+import express from 'express';
+import {
+  listarRequests,
+  buscarRequestPorId,
+  cadastrarRequest,
+  atualizarRequest,
+  excluirRequest,
+  encontrarRequestPorApi,
+} from '../controllers/requestController.js';
 
 const requestRoutes = (app) => {
-    app.use(express.json());
+  app.use(express.json());
 
-    app.get('/request', listarRequisicoes);
+  app.get('/request', listarRequests);
 
-    app.get('/request/:id', listarRequisicaoPorId);
+  app.get('/request/:id', buscarRequestPorId);
 
-    app.post('/request', cadastarRequisicao);
+  app.post('/request', cadastrarRequest);
 
-    app.put('/request/:id', atualizarRequisicao);
+  app.put('/request/:id', atualizarRequest);
 
-    app.delete('/request/:id', excluirRequisicao);
+  app.delete('/request/:id', excluirRequest);
 
-}
+  app.get('/request/api/:id', encontrarRequestPorApi);
+};
 
-export default requestRoutes;    */            
+export default requestRoutes;

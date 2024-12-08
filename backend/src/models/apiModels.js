@@ -1,41 +1,46 @@
 import fetch from 'node-fetch';
-import { apis } from "../../data.js";
+import db from '../database.js';
+import { atualizaApiJob } from './requestModel.js';
 
-export async function encontrarApiModelo(id){
-    return apis.find((api) => api.id == id);    
-};
+//retorna uma API com ID
+export async function encontrarApiModelo(id) {
+  return await db.oneOrNone(
+    'SELECT codigo, nome, descricao, url_base, freq_mon_min, data_cadastro FROM api WHERE codigo = $1;',
+    [id]
+  );
+}
 
-export async function listarApisModelo(){
-    return apis;
-};
+//retorna todas as API
+export async function listarApisModelo() {
+  return await db.query(`SELECT codigo, nome, descricao, url_base, freq_mon_min, data_cadastro FROM api;`);
+}
 
+//cadastra uma API
 export async function cadastrarApiModelo(novaApi) {
-    apis.push(novaApi);
-    return novaApi;
-};
+  const dataCadastro = new Date(Date.now()).toISOString();
+  return await db.one(
+    'INSERT INTO api (nome, descricao, url_base, freq_mon_min, data_cadastro) VALUES ($1, $2, $3, $4, $5) RETURNING *;',
+    [novaApi.nome, novaApi.descricao, novaApi.url_base, novaApi.freq_mon_min, dataCadastro]
+  );
+}
 
-export async function atualizarApiModelo(id, valorAtualizado){
-    let api = apis.find((api) => api.id == id);
-    api = {...api, ...valorAtualizado};
-    return api;
-};
+//atualiza uma API
+export async function atualizarApiModelo(id, valorAtualizado) {
+  const api = await encontrarApiModelo(id);
+  if (!api) throw new Error('API não encontrada');
 
+  const { nome, descricao, url_base, freq_mon_min } = valorAtualizado;
+  atualizaApiJob(id, freq_mon_min);
+  return await db.one(
+    'UPDATE api SET nome = $1, descricao = $2, url_base = $3, freq_mon_min = $4 WHERE codigo = $5 RETURNING *;',
+    [nome, descricao, url_base, freq_mon_min, id]
+  );
+}
+
+//exclui uma API
 export async function excluirApiModelo(id) {
-    apis.splice(id, 1)[0];
-};
-
-export async function verificaStatusApiModelo(id){
-    apiDesejada = encontrarApiModelo(id);
-    try{
-        const url = apiDesejada.url_base;
-        const resposta = await fetch(url);
-        return resposta.ok;
-    } catch(erro) {
-        console.error(erro.message);
-        return false;
-    }
-}; 
-
+  return await db.none('DELETE FROM api WHERE codigo = $1;', [id]);
+}
 
 
 

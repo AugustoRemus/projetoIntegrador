@@ -1,16 +1,24 @@
-/*import express from "express";
+import express from 'express';
+import {
+  listarPermissions,
+  buscarPermissionPorId,
+  cadastrarPermission,
+  atualizarPermission,
+  excluirPermission,
+} from '../controllers/permissionsController.js';
 
 const permissionsRoutes = (app) => {
-    app.use(express.json());
+  app.use(express.json());
 
-    app.get('/permission', listaroPermissao);
+  app.get('/permissao', listarPermissions);
 
-    app.post('/permission', cadastarPermissao);
+  app.get('/permissao/:id', buscarPermissionPorId);
 
-    app.put('/permission/:id', atualizarPermissao);
+  app.post('/permissao', cadastrarPermission);
 
-    app.delete('/permission/:id', excluirPermissao);
+  app.put('/permissao/:id', atualizarPermission);
 
-}
+  app.delete('/permissao/:id', excluirPermission);
+};
 
-export default permissionsRoutes;*/
+export default permissionsRoutes;

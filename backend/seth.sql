@@ -78,7 +78,7 @@ INSERT INTO API (nome, descricao, url_base, freq_mon_min, data_cadastro) VALUES
 ('Nasa', 'acessar dados de astronomia e imagens de planetas e galáxias', 'https://api.nasa.gov', 7, '2024-12-07'),
 ('Marvel', 'informações sobre biblioteca de quadrinhos da Marvel', 'https://developer.marvel.com', 1, '2024-12-07'),
 ('Football-Data.org', 'dados e estatísticas de futebol de maneira legível por máquina', 'https://football-data.org', 15, '2024-12-07'),
-('Adorable Avatars', 'serviço de espaço reservado para avatar para desenvolvedores e designers da web', 'https://adorableavatars.com', 2, '2024-12-07'),
+('DiceBear', 'cria avateres para perfis, designs, websites ou app', 'https://avatars.dicebear.com', 2, '2024-12-08'),
 ('MovieDB', 'dados de filmes, atores e programas de TV', 'https://www.themoviedb.org', 3, '2024-12-07');
 
 INSERT INTO USUARIO (nome, email, telefone, login, senha, sigla_grupo) VALUES 

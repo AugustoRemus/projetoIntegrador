@@ -5,6 +5,7 @@ import {
   cadastrarApi,
   atualizarApi,
   excluirApi,
+  verificaStatus
 } from '../controllers/apiController.js';
 import { tokenAutenticado } from '../controllers/userController.js';
 
@@ -20,6 +21,8 @@ const apiRoutes = (app) => {
   app.put('/api/:id/', atualizarApi);
 
   app.delete('/api/:id', excluirApi);
+
+  app.get('/api/status/:id', verificaStatus);
 
 };
 

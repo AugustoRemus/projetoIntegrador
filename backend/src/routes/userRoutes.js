@@ -4,6 +4,7 @@ import {
   atualizarUsuario,
   excluirUsuario,
   atualizarSenhaUsuario,
+  cadastrarUsuario,
 } from '../controllers/userController.js';
 import express from 'express';
 
@@ -13,6 +14,8 @@ const userRoutes = (app) => {
   app.get('/user', listarUsuarios);
 
   app.get('/user/:id', buscarUsuarioPorId);
+
+  app.post('/user', cadastrarUsuario);
 
   app.put('/user/:id', atualizarUsuario);
 

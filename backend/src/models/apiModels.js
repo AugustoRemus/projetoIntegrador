@@ -42,5 +42,17 @@ export async function excluirApiModelo(id) {
   return await db.none('DELETE FROM api WHERE codigo = $1;', [id]);
 }
 
+export async function verificaStatusModelo(id) {
+  try {
+    const resultado = await db.query(`SELECT url_base FROM api WHERE codigo  = $1`, [id]);
+    const url = resultado[0].url_base;
+    const response = await fetch(url);
+    return response.status;
+  
+  } catch (erro) {
+    console.error(erro.message);
+  }
+  
+}
 
 

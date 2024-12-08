@@ -53,6 +53,10 @@ export async function buscarUsuarioPorId(req, res) {
 
 export async function cadastrarUsuario(req, res) {
   try {
+    if (!req.body.senha) {
+      res.status(400).json({ Erro: 'Senha não informada ou dados inválidos' });
+      return;
+    }
     const senha = req.body.senha;
     const novoUsuario = req.body;
 

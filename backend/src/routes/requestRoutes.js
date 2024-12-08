@@ -6,6 +6,7 @@ import {
   atualizarRequest,
   excluirRequest,
   encontrarRequestPorApi,
+  gerarRelatorio
 } from '../controllers/requestController.js';
 
 const requestRoutes = (app) => {
@@ -22,6 +23,8 @@ const requestRoutes = (app) => {
   app.delete('/request/:id', excluirRequest);
 
   app.get('/request/api/:id', encontrarRequestPorApi);
+
+  app.get('/relatorio/:id', gerarRelatorio);
 };
 
 export default requestRoutes;

@@ -5,6 +5,7 @@ import {
   atualizarRequestModelo,
   excluirRequestModelo,
   encontrarRequestApiModelo,
+  gerarRelatorioModelo
 } from '../models/requestModel.js';
 
 export async function listarRequests(req, res) {
@@ -80,3 +81,14 @@ export async function encontrarRequestPorApi(req, res) {
     res.status(500).json({ erro: 'Falha na requisição' });
   }
 }
+
+export async function gerarRelatorio(req, res){
+  const id = req.params.id;
+  try{
+    const resultado = await gerarRelatorioModelo(id);
+    res.status(200).send("Relatório Criado");
+  } catch(erro){
+    console.log(erro);
+    res.status(500).json({erro: 'Falha na requisição'});
+  }
+};

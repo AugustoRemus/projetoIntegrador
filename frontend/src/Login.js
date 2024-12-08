@@ -42,26 +42,6 @@ export default function Login({ setLogado, setIsAdmin, setTelaAtiva, setToken, s
     }
   }
 
-  //cuida do dbug, tirar no final
-  function handleDebug(action) {
-    switch (action) {
-      case 'logar':
-        setLogado(true);
-        setTelaAtiva('apis');
-        break;
-      case 'deslogar':
-        setLogado(false);
-        break;
-      case 'virarAdm':
-        setIsAdmin(true);
-        break;
-      case 'desviarAdm':
-        setIsAdmin(false);
-        break;
-      default:
-        break;
-    }
-  }
 
   return (
     <Box
@@ -111,15 +91,7 @@ export default function Login({ setLogado, setIsAdmin, setTelaAtiva, setToken, s
           </Button>
         </Stack>
 
-        <Stack
-          direction="row"
-          spacing={2} //botoes do debug
-        >
-          <Button onClick={() => handleDebug('logar')}>Debug: Logar</Button>
-          <Button onClick={() => handleDebug('deslogar')}>Debug: Deslogar</Button>
-          <Button onClick={() => handleDebug('virarAdm')}>Debug: Virar Admin</Button>
-          <Button onClick={() => handleDebug('desviarAdm')}>Debug: Desviar Admin</Button>
-        </Stack>
+        
       </Stack>
       <Snackbar open={openMessage} autoHideDuration={6000} onClose={() => setOpenMessage(false)}>
         <Alert severity={messageSeverity}>{messageText}</Alert>

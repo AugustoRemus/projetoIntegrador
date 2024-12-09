@@ -98,6 +98,8 @@ export default function Conf({ setLogado, setTelaAtiva }) {
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
         borderRadius: '8px',
         padding: '2.5vw 3vw',
+        
+        
       }}
     >
       <Box
@@ -108,6 +110,9 @@ export default function Conf({ setLogado, setTelaAtiva }) {
           gap: 2,
           width: '100%',
           maxWidth: '70ch',
+          fontSize: '2rem',
+          alignItems: 'center',
+          
         }}
         noValidate
         autoComplete="off"
@@ -134,7 +139,8 @@ export default function Conf({ setLogado, setTelaAtiva }) {
               name="nome"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
-              variant="standard"
+              
+              fullWidth
             />
 
             <TextField
@@ -143,7 +149,8 @@ export default function Conf({ setLogado, setTelaAtiva }) {
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              variant="standard"
+            
+              fullWidth
             />
 
             <TextField
@@ -152,8 +159,10 @@ export default function Conf({ setLogado, setTelaAtiva }) {
               name="numero"
               value={telefone}
               onChange={(e) => setTelefone(e.target.value)}
-              variant="standard"
+              
               type="text"
+              fullWidth
+              
             />
 
             <TextField
@@ -162,7 +171,8 @@ export default function Conf({ setLogado, setTelaAtiva }) {
               name="usuario"
               value={login}
               onChange={(e) => setLogin(e.target.value)}
-              variant="standard"
+            
+              fullWidth
             />
           </>
         )}
@@ -181,10 +191,10 @@ export default function Conf({ setLogado, setTelaAtiva }) {
           value={senha}
           type="password"
           onChange={(e) => setSenha(e.target.value)}
-          variant="standard"
+          fullWidth
         />
         <Button variant="contained" color="primary" sx={{ mt: 3 }} onClick={handleSaveLogin} disabled={senha === ''}>
-          Salvar login
+          Salvar senha
         </Button>
 
         <Snackbar open={openMessage} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} autoHideDuration={6000} onClose={() => setOpenMessage(false)}>

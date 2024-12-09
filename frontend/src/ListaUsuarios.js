@@ -42,6 +42,8 @@ export default function ListaUsuarios() {
         borderRadius: '8px',
         paddingLeft: '2.5vw',
         paddingRight: '3vw',
+        fontSize: '2rem'
+        
       }}
     >
       <h2>Usuários Cadastrados</h2>

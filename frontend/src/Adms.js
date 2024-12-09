@@ -176,10 +176,11 @@ export default function Adms(setTelaAtiva) {
             </MenuItem>
           ))}
         </Select>
-        <Button variant="contained" color="primary" onClick={handleCreateUser}>
+        
+      </Stack>
+      <Button variant="contained" color="primary" onClick={handleCreateUser}>
           Criar Usuário
         </Button>
-      </Stack>
 
       <Snackbar open={openMessage} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} autoHideDuration={6000} onClose={() => setOpenMessage(false)}>
         <Alert severity={messageSeverity}>{messageText}</Alert>

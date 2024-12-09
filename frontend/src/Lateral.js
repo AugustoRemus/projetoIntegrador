@@ -140,7 +140,7 @@ export default function Lateral() {
         
         <img
            src={foto}
-          alt="botao"
+          alt="Logo da empresa Seth Total, clique para acessar o site oficial da empresa"
           style={{ width: '100%', height: '100%' }} 
         />
       </Button>

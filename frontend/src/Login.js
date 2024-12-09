@@ -61,9 +61,11 @@ export default function Login({ setLogado, setIsAdmin, setTelaAtiva, setToken, s
         alignItems: 'center',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
         borderRadius: '8px',
+        fontSize: '3rem'
       }}
     >
       <h1>Tela de Login</h1>
+      
       <Stack spacing={2} sx={{ width: '60%' }}>
         <TextField required label="Usuário" value={login} onChange={(event) => setUserLogin(event.target.value)} />
 

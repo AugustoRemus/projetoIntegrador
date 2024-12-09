@@ -200,7 +200,7 @@ export async function gerarTokenAcesso(usuario) {
   return token;
 }
 
-export async function atualizarSenhaUsuario(id) {
+export async function atualizarSenhaUsuario(req, res) {
   try {
     const id = req.params.id;
     const novaSenha = req.body.senha;

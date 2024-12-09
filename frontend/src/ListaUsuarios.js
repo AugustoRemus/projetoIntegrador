@@ -32,7 +32,8 @@ export default function ListaUsuarios() {
         top: '10vh',
         left: '10vw',
         border: '4px solid black',
-        backgroundColor: '#f5f5f5',
+        //backgroundColor: '#f5f5f5',
+        backgroundColor: '#fafafa',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -44,9 +45,9 @@ export default function ListaUsuarios() {
       }}
     >
       <h2>Usuários Cadastrados</h2>
-      <TableContainer component={Paper} sx={{ width: '100%', mb: 3 }}>
+      <TableContainer component={Paper} sx={{ width: '100%', mb: 3 , }}>
         <Table>
-          <TableHead>
+          <TableHead sx={{ backgroundColor: '#d3d3d3' }}>
             <TableRow>
               <TableCell>
                 <b>ID</b>
@@ -86,10 +87,12 @@ export default function ListaUsuarios() {
                 <TableCell colSpan={4} align="center">
                   Nenhum usuário disponível...
                 </TableCell>
-              </TableRow>
+              </TableRow >
             ) : (
-              listaUsuarios.map((usuario) => (
-                <TableRow key={usuario.codigo}>
+              listaUsuarios.map((usuario, index) => (
+                <TableRow key={usuario.codigo} sx={{
+                  backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9f9f9',
+                }}>
                   <TableCell>{usuario.codigo}</TableCell>
                   <TableCell>{usuario.nome}</TableCell>
                   <TableCell>{usuario.email}</TableCell>

@@ -26,8 +26,8 @@ export default function Adms(setTelaAtiva) {
     try {
       const res = await axios.get('http://localhost:3005/cargo');
       setPermissions(res.data);
-      setOpenMessage(true);
-      setMessageText('Permissões carregadas com sucesso.');
+      //setOpenMessage(true);
+      //setMessageText('Permissões carregadas com sucesso.');
       setMessageSeverity('success');
     } catch (error) {
       console.error('Erro ao buscar permissões:', error);
@@ -102,7 +102,7 @@ export default function Adms(setTelaAtiva) {
         top: '10vh',
         left: '10vw',
         border: '4px solid black',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#fafafa',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

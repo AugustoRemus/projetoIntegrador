@@ -24,14 +24,20 @@ export default function Apis() {
     }
   };
 
-  //pega o status da api passada
   const fetchStatus = async (codigo) => {
     try {
       const resStatus = await axios.get(`http://localhost:3005/api/status/${codigo}`);
-      console.log(resStatus);
       setStatusMap((prev) => ({ ...prev, [codigo]: resStatus.data.status }));
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const getStatusColor = (status, index) => {
+    if (status === 200) {
+      return index % 2 === 0 ? '#78ffa0' : '#7ce687'; 
+    } else {
+      return index % 2 === 0 ? '#ff6961' : '#eb584d'; 
     }
   };
 
@@ -44,7 +50,7 @@ export default function Apis() {
         top: '10vh',
         left: '10vw',
         border: '4px solid black',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#fafafa',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -58,7 +64,7 @@ export default function Apis() {
       <h1>Exibição de APIs</h1>
       <TableContainer component={Paper} sx={{ width: '100%' }}>
         <Table>
-          <TableHead>
+          <TableHead sx={{ backgroundColor: '#d3d3d3' }}>
             <TableRow>
               <TableCell>
                 <b>ID</b>
@@ -91,14 +97,19 @@ export default function Apis() {
                 </TableCell>
               </TableRow>
             ) : (
-              listaApis.map((api) => (
-                <TableRow key={api.codigo}>
+              listaApis.map((api, index) => (
+                <TableRow key={api.codigo} sx={{
+                  backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9f9f9',
+                }}> 
                   <TableCell>{api.codigo}</TableCell>
                   <TableCell>{api.nome}</TableCell>
-                  <TableCell>
-                    {
-                      statusMap[api.codigo] || 'Carregando...' //pega o status q veio do get ou mostra n encontrado
-                    }
+                  <TableCell
+                    sx={{
+                      backgroundColor: getStatusColor(statusMap[api.codigo] || 'indisponível', index),
+                      color: 'black',
+                    }}
+                  >
+                    {statusMap[api.codigo] || 'Carregando...'}
                   </TableCell>
                 </TableRow>
               ))

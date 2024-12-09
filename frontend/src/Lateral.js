@@ -5,9 +5,10 @@ import Login from './Login';
 import Apis from './Apis';
 import Conf from './Conf';
 import Adms from './Adms';
-import Cabecalho from './Cabecalho';
 import ApiAdms from './ApiAdms';
 import ListaUsuarios from './ListaUsuarios';
+import { Button } from '@mui/material';
+import foto from './imagem/Seth.png';
 
 export default function Lateral() {
   const [logado, setLogado] = React.useState(false);
@@ -37,6 +38,8 @@ export default function Lateral() {
     setTelaAtiva('login');
     localStorage.removeItem('token');
   };
+
+  
 
   const telas = {
     login: (
@@ -68,14 +71,14 @@ export default function Lateral() {
     { label: 'Usuários', tela: 'usuarios', precisaLogin: true, precisaAdmin: true },
     { label: 'Administrar Usuários', tela: 'adms', precisaLogin: true, precisaAdmin: true },
     { label: 'Configurações', tela: 'conf', precisaLogin: true, codigo: codigo },
-    { label: 'Sair', precisaLogin: true, acao: handleDeslogar }, //acao faz acontecer as paradas, bom pra debug
+    { label: 'Sair', precisaLogin: true, acao: handleDeslogar },
   ];
 
   return (
     <Box
       component="section"
       sx={{
-        bgcolor: '#4a4a4a',
+        bgcolor: '#F0F0F0',
         width: '10vw',
         height: '90vh',
         boxShadow: 1,
@@ -87,7 +90,7 @@ export default function Lateral() {
         borderRight: '4px solid black',
       }}
     >
-      <Cabecalho />
+
 
       {botoes.map((botao, index) => {
         const podeExibir =
@@ -101,15 +104,16 @@ export default function Lateral() {
             value="check"
             onClick={() => {
               if (botao.acao) {
-                botao.acao(); //executa acao do botao
+                botao.acao();
               } else {
-                setTelaAtiva(botao.tela); //troca a tela
+                setTelaAtiva(botao.tela);
               }
             }}
             sx={{
               height: '10vh',
               boxShadow: 1,
               border: '1px solid black',
+              backgroundColor: telaAtiva === botao.tela ? '#c5c9c6' : 'white',
             }}
           >
             {botao.label}
@@ -127,6 +131,19 @@ export default function Lateral() {
       >
         {telas[telaAtiva]}
       </Box>
+      <Button
+        component="a" 
+        href="https://sethtotal.com.br" 
+        target="_blank" 
+        sx={{ padding: 0 }} 
+      >
+        
+        <img
+           src={foto}
+          alt="botao"
+          style={{ width: '100%', height: '100%' }} 
+        />
+      </Button>
     </Box>
   );
 }

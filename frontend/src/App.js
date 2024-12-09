@@ -1,5 +1,6 @@
 import React from "react";
 import Lateral from "./Lateral";
+import Cabecalho from './Cabecalho';
 
 
 
@@ -11,6 +12,7 @@ function App() {
     return (
         <div>	
             <Lateral />
+            <Cabecalho />
  
         </div>
     );

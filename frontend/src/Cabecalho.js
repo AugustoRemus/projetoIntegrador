@@ -18,32 +18,70 @@ function Cabecalho() {
             <Box
                 component="section"
                 sx={{
-                    bgcolor: '#343434', 
+                    bgcolor: '#F0F0F0', 
                     height: '10vh',
-                    boxShadow: 1,
+                    boxShadow: 4,
                     position: 'fixed',
+                    justifyContent: 'center',
                     top: 0,
                     left: 0,
                     right: 0,
                     borderBottom: '4px solid black',
                 }}
             >
-                
                 <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={2} alignItems="center">
                         <Grid size={2}>
-                            Parte inicial logo da empresa ou status
+                           
+                        <Box
+                                sx={{
+                                    color: 'black', 
+                                    //backgroundColor: '#000000', 
+                                    fontFamily: 'Roboto Mono, monospace', 
+                                    fontSize: '3rem',
+                                    fontWeight: 'bold',
+                                    display: 'flex',
+                                    alignItems: 'center', 
+                                    justifyContent: 'center', 
+                                    height: '100%', 
+                                    textAlign: 'center',
+                                }}
+                            >
+                                Seth Total
+                            </Box>
+
                         </Grid>
-                        <Grid size={8}>
+                        <Grid size={2} >
+                        <Box
+                                sx={{
+                                    color: 'black', 
+                                   
+                                    fontFamily: 'Roboto Mono, monospace', 
+                                    fontSize: '2rem',
+                                 
+                                   
+                                }}
+                            >
+                                Monitor de APIs
+                            </Box>
                            
                         </Grid>
-                        <Grid size={1}></Grid>
-                        <Grid size={1}>
+                        <Grid size={6}>
+                            
+                        </Grid>
+                       
+                        <Grid size={2} sx={{height: '10vh',}}>
                             <Box
                                 sx={{
-                                    color: 'white', 
-                                    fontSize: '2rem', 
+                                    color: 'black', 
+                                    //backgroundColor: '#000000', 
+                                    fontFamily: 'Roboto Mono, monospace', 
+                                    fontSize: '2rem',
                                     fontWeight: 'bold',
+                                    display: 'flex',
+                                    alignItems: 'center', 
+                                    justifyContent: 'center', 
+                                    height: '100%', 
                                     textAlign: 'center',
                                 }}
                             >

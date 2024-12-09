@@ -73,7 +73,7 @@ export default function ApiAdms(setTelaAtiva) {
         top: '10vh',
         left: '10vw',
         border: '4px solid black',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#fafafa',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

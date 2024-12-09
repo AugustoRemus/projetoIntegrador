@@ -26,8 +26,6 @@ export default function Adms(setTelaAtiva) {
     try {
       const res = await axios.get('http://localhost:3005/cargo');
       setPermissions(res.data);
-      //setOpenMessage(true);
-      //setMessageText('Permissões carregadas com sucesso.');
       setMessageSeverity('success');
     } catch (error) {
       console.error('Erro ao buscar permissões:', error);
@@ -111,8 +109,18 @@ export default function Adms(setTelaAtiva) {
         borderRadius: '8px',
         paddingLeft: '2.5vw',
         paddingRight: '3vw',
+        
       }}
+      
     >
+      <Box sx={{    display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 2,
+          width: '70%',}}>
+        
+     
       <h2>Deletar Usuário por ID</h2>
       <Stack direction="row" spacing={2} sx={{ mb: 3, width: '100%' }}>
         <TextField
@@ -173,9 +181,10 @@ export default function Adms(setTelaAtiva) {
         </Button>
       </Stack>
 
-      <Snackbar open={openMessage} autoHideDuration={6000} onClose={() => setOpenMessage(false)}>
+      <Snackbar open={openMessage} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} autoHideDuration={6000} onClose={() => setOpenMessage(false)}>
         <Alert severity={messageSeverity}>{messageText}</Alert>
       </Snackbar>
+      </Box>
     </Box>
   );
 }

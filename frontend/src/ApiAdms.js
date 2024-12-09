@@ -85,7 +85,7 @@ export default function ApiAdms(setTelaAtiva) {
       }}
     >
       <h2>Cadastrar nova API</h2>
-      <Stack spacing={2} sx={{ width: '100%' }}>
+      <Stack spacing={2} sx={{ width: '70%' }}>
         <TextField
           label="Nome API" //pega o nome
           value={newAPI.nome}
@@ -110,13 +110,55 @@ export default function ApiAdms(setTelaAtiva) {
           onChange={(e) => setNewAPI({ ...newAPI, freq_mon_min: e.target.value })}
         />
 
+
+      <Box
+        component="form"
+        sx={{
+          
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 2,
+          width: '100%',
+         // maxWidth: '50ch',
+        }}
+        noValidate
+        autoComplete="off"
+      >
+       
         <Button variant="contained" color="primary" onClick={handleCreateAPI}>
           Cadastrar API
         </Button>
+
+
+
+        <Button 
+            variant="outlined"
+            color="error"
+           
+            onClick={() => {
+             
+              
+              setNewAPI({ nome: '',
+                descricao: '',
+                url_base: '',
+                freq_mon_min: '',})
+              
+            }}
+          >
+            Limpar
+          </Button>
+
+
+          </Box>
+       
+
+
       </Stack>
 
       <h2>Deletar API por ID</h2>
-      <Stack direction="row" spacing={2} sx={{ mb: 3, width: '100%' }}>
+      <Stack direction="row" spacing={2} sx={{ mb: 3, width: '70%' }}>
         <TextField
           label="ID da API para Deletar"
           value={deleteId}
@@ -128,7 +170,7 @@ export default function ApiAdms(setTelaAtiva) {
         </Button>
       </Stack>
 
-      <Snackbar open={openMessage} autoHideDuration={6000} onClose={() => setOpenMessage(false)}>
+      <Snackbar open={openMessage} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} autoHideDuration={6000} onClose={() => setOpenMessage(false)}>
         <Alert severity={messageSeverity}>{messageText}</Alert>
       </Snackbar>
     </Box>

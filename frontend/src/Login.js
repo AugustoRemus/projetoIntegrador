@@ -96,7 +96,7 @@ export default function Login({ setLogado, setIsAdmin, setTelaAtiva, setToken, s
 
         
       </Stack>
-      <Snackbar open={openMessage} autoHideDuration={6000} onClose={() => setOpenMessage(false)}>
+      <Snackbar open={openMessage} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} autoHideDuration={6000} onClose={() => setOpenMessage(false)}>
         <Alert severity={messageSeverity}>{messageText}</Alert>
       </Snackbar>
     </Box>

@@ -85,12 +85,11 @@ export default function Conf({ setLogado, setTelaAtiva }) {
     <Box
       sx={{
         width: '85vw',
-        height: '90vh',
+        height: '80vh',
         position: 'fixed',
         top: '10vh',
         left: '10vw',
         border: '4px solid black',
-        //backgroundColor: '#f5f5f5',
         backgroundColor: '#fafafa',
         display: 'flex',
         flexDirection: 'column',
@@ -108,7 +107,7 @@ export default function Conf({ setLogado, setTelaAtiva }) {
           flexDirection: 'column',
           gap: 2,
           width: '100%',
-          maxWidth: '50ch',
+          maxWidth: '70ch',
         }}
         noValidate
         autoComplete="off"
@@ -172,6 +171,8 @@ export default function Conf({ setLogado, setTelaAtiva }) {
           Salvar Dados
         </Button>
 
+        
+
         <h1>Segurança</h1>
         <TextField
           id="senha"
@@ -186,7 +187,7 @@ export default function Conf({ setLogado, setTelaAtiva }) {
           Salvar login
         </Button>
 
-        <Snackbar open={openMessage} autoHideDuration={6000} onClose={() => setOpenMessage(false)}>
+        <Snackbar open={openMessage} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} autoHideDuration={6000} onClose={() => setOpenMessage(false)}>
           <Alert severity={messageSeverity}>{messageText}</Alert>
         </Snackbar>
       </Box>
